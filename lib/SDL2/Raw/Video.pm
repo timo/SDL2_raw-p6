@@ -2,7 +2,7 @@ use NativeCall;
 
 use SDL2::Raw::Rect;
 
-class SDL_DisplayMode is rw is repr('CStruct') {
+class SDL_DisplayMode is repr('CStruct') {
     has uint32 $.format;
     has int    $.w;
     has int    $.h;
@@ -48,8 +48,8 @@ enum WindowEventID (
     'SDL_WINDOWEVENT_CLOSE',          # The window manager requests that the window be closed
 );
 
-our constant int SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000;
-our constant int SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000;
+our constant SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000;
+our constant SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000;
 
 sub SDL_VideoInit(Str $drivername) returns int is native('libSDL-2.0') {*}
 sub SDL_VideoQuit() is native('libSDL-2.0') {*}

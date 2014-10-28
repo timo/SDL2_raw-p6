@@ -1,0 +1,15 @@
+{
+    "name" : "SDL2::Raw",
+    "version" : "0.1",
+    "description" : "Raw NativeCall wrapper for libSDL2",
+    "depends" : [ "NativeCall" ],
+    "source-url" : "git://github.com/timo/SDL2_Raw.git",
+    "author" : "Timo Paulssen",
+    "provides": {
+        "SDL2::Raw": "lib/SDL2/Raw.pm",
+        "SDL2::Raw::Main": "lib/SDL2/Raw/Main.pm",
+        "SDL2::Raw::Rect": "lib/SDL2/Raw/Rect.pm",
+        "SDL2::Raw::Render": "lib/SDL2/Raw/Render.pm",
+        "SDL2::Raw::Video": "lib/SDL2/Raw/Video.pm"
+    }
+}

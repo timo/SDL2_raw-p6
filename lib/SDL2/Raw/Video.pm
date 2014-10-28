@@ -1,8 +1,8 @@
 use NativeCall;
 
-use SDL::Raw::Rect;
+use SDL2::Raw::Rect;
 
-class SDL::DisplayMode is rw is repr('CStruct') {
+class SDL_DisplayMode is rw is repr('CStruct') {
     has uint32 $.format;
     has int    $.w;
     has int    $.h;
@@ -10,7 +10,7 @@ class SDL::DisplayMode is rw is repr('CStruct') {
     has OpaquePointer $.driverdata;
 }
 
-class SDL::Window is repr('OpaquePointer') { }
+class SDL_Window is repr('CPointer') { }
 
 enum SDL_WindowFlags (
     :FULLSCREEN(0x00000001),
@@ -60,13 +60,13 @@ sub SDL_GetCurrentVideoDriver() returns Str is native('libSDL-2.0') {*}
 
 sub SDL_GetNumVideoDisplays() returns int is native('libSDL-2.0') {*}
 sub SDL_GetDisplayName(int $index) returns Str is native('libSDL-2.0') {*}
-sub SDL_GetDisplayBounds(int $index, CArray[SDL::Rect] $rect) returns int is native('libSDL-2.0') {*}
+sub SDL_GetDisplayBounds(int $index, CArray[SDL_Rect] $rect) returns int is native('libSDL-2.0') {*}
 
-sub SDL_CreateWindow(Str $title, int $x, int $y, int $w, int $h, uint32 $flags) returns SDL::Window is native('libSDL-2.0') {*}
-sub SDL_SetWindowTitle(SDL::Window $window, Str $title) returns Str is native('libSDL-2.0') {*}
-sub SDL_GetWindowTitle(SDL::Window $window) returns Str is native('libSDL-2.0') {*}
+sub SDL_CreateWindow(Str $title, int $x, int $y, int $w, int $h, uint32 $flags) returns SDL_Window is native('libSDL-2.0') {*}
+sub SDL_SetWindowTitle(SDL_Window $window, Str $title) returns Str is native('libSDL-2.0') {*}
+sub SDL_GetWindowTitle(SDL_Window $window) returns Str is native('libSDL-2.0') {*}
 
-sub SDL_UpdateWindowSurface(SDL::Window $window) returns int is native('libSDL-2.0') {*}
+sub SDL_UpdateWindowSurface(SDL_Window $window) returns int is native('libSDL-2.0') {*}
 
-sub SDL_SetWindowGrab(SDL::Window $window, int $grabbed) is native('libSDL-2.0') {*}
-sub SDL_GetWindowGrab(SDL::Window $window) returns int is native('libSDL-2.0') {*}
+sub SDL_SetWindowGrab(SDL_Window $window, int $grabbed) is native('libSDL-2.0') {*}
+sub SDL_GetWindowGrab(SDL_Window $window) returns int is native('libSDL-2.0') {*}

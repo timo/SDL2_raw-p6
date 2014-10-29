@@ -31,21 +31,21 @@ enum SDL_WindowFlags (
 );
 
 enum WindowEventID (
-    'SDL_WINDOWEVENT_NONE',           # Never used
-    'SDL_WINDOWEVENT_SHOWN',          # Window has been shown
-    'SDL_WINDOWEVENT_HIDDEN',         # Window has been hidden
-    'SDL_WINDOWEVENT_EXPOSED',        # Window has been exposed and should be redrawn
-    'SDL_WINDOWEVENT_MOVED',          # Window has been moved to data1', data2
-    'SDL_WINDOWEVENT_RESIZED',        # Window has been resized to data1xdata2
-    'SDL_WINDOWEVENT_SIZE_CHANGED',   # The window size has changed', either as a result of an API call or through the system or user changing the window size.
-    'SDL_WINDOWEVENT_MINIMIZED',      # Window has been minimized
-    'SDL_WINDOWEVENT_MAXIMIZED',      # Window has been maximized
-    'SDL_WINDOWEVENT_RESTORED',       # Window has been restored to normal size and position
-    'SDL_WINDOWEVENT_ENTER',          # Window has gained mouse focus
-    'SDL_WINDOWEVENT_LEAVE',          # Window has lost mouse focus
-    'SDL_WINDOWEVENT_FOCUS_GAINED',   # Window has gained keyboard focus
-    'SDL_WINDOWEVENT_FOCUS_LOST',     # Window has lost keyboard focus
-    'SDL_WINDOWEVENT_CLOSE',          # The window manager requests that the window be closed
+    'NONE',           # Never used
+    'SHOWN',          # Window has been shown
+    'HIDDEN',         # Window has been hidden
+    'EXPOSED',        # Window has been exposed and should be redrawn
+    'MOVED',          # Window has been moved to data1', data2
+    'RESIZED',        # Window has been resized to data1xdata2
+    'SIZE_CHANGED',   # The window size has changed', either as a result of an API call or through the system or user changing the window size.
+    'MINIMIZED',      # Window has been minimized
+    'MAXIMIZED',      # Window has been maximized
+    'RESTORED',       # Window has been restored to normal size and position
+    'ENTER',          # Window has gained mouse focus
+    'LEAVE',          # Window has lost mouse focus
+    'FOCUS_GAINED',   # Window has gained keyboard focus
+    'FOCUS_LOST',     # Window has lost keyboard focus
+    'CLOSE',          # The window manager requests that the window be closed
 );
 
 our constant SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000;

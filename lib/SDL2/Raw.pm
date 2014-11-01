@@ -111,23 +111,60 @@ class SDL_Renderer is repr('CPointer') { }
 
 class SDL_Texture is repr('CPointer') { }
 
-sub SDL_GetNumRenderDrivers returns int is native('libSDL2') is export {*}
-sub SDL_GetRenderDriverInfo(int $index, SDL_RendererInfo $info) returns int is native('libSDL2') is export {*}
+sub SDL_GetNumRenderDrivers()
+        returns int
+        is native('libSDL2')
+        is export
+        {*}
+
+sub SDL_GetRenderDriverInfo(int $index, SDL_RendererInfo $info)
+        returns int
+        is native('libSDL2')
+        is export
+        {*}
 
 sub SDL_CreateWindowAndRenderer(int $width, int $height,
-                                uint32 $flags,
-                                SDL_Window $win, SDL_Renderer $renderer)
-                        returns int is native('libSDL2') is export {*}
+                                int32 $flags,
+                                CArray[SDL_Window] $win, CArray[SDL_Renderer] $renderer)
+        returns int
+        is native('libSDL2')
+        is export
+        {*}
 
-sub SDL_CreateRenderer(SDL_Window $win, int $index, uint32 $flags) returns SDL_Renderer is native('libSDL2') is export {*}
+sub SDL_CreateRenderer(SDL_Window $win, int $index, int32 $flags)
+        returns SDL_Renderer
+        is native('libSDL2')
+        is export
+        {*}
 
-sub SDL_SetTextureBlendMode(SDL_Texture $tex, int $blendmode) returns int is native('libSDL2') is export {*}
-sub SDL_GetTextureBlendMode(SDL_Texture $tex, CArray[int] $blendmode) returns int is native('libSDL2') is export {*}
+sub SDL_SetTextureBlendMode(SDL_Texture $tex, int $blendmode)
+        returns int
+        is native('libSDL2')
+        is export
+        {*}
 
-sub SDL_RenderSetLogicalSize(SDL_Renderer $renderer, int $w, int $h) returns int is native('libSDL2') is export {*}
-sub SDL_RenderGetLogicalSize(SDL_Renderer $renderer, CArray[int] $w, CArray[int] $h) is native('libSDL2') is export {*}
+sub SDL_GetTextureBlendMode(SDL_Texture $tex, CArray[int] $blendmode)
+        returns int
+        is native('libSDL2')
+        is export
+        {*}
 
-sub SDL_SetRenderDrawColor(SDL_Renderer $renderer, uint8 $r, uint8 $g, uint8 $b, uint8 $a) returns int is native('libSDL2') is export {*}
+sub SDL_RenderSetLogicalSize(SDL_Renderer $renderer, int $w, int $h)
+        returns int
+        is native('libSDL2')
+        is export
+        {*}
+
+sub SDL_RenderGetLogicalSize(SDL_Renderer $renderer, CArray[int] $w, CArray[int] $h)
+        is native('libSDL2')
+        is export {*}
+
+sub SDL_SetRenderDrawColor(SDL_Renderer $renderer, uint8 $r, uint8 $g, uint8 $b, uint8 $a)
+        returns int
+        is native('libSDL2')
+        is export
+        {*}
+
 sub SDL_GetRenderDrawColor(SDL_Renderer $renderer, CArray[uint8] $r, CArray[uint8] $g, CArray[uint8] $b, CArray[uint8] $a) returns int is native('libSDL2') is export {*}
 
 sub SDL_RenderCopy(SDL_Renderer $renderer, SDL_Texture $src, SDL_Rect $srcrect, SDL_Rect $destrect) returns int is native('libSDL2') is export {*}
@@ -141,6 +178,7 @@ sub SDL_DestroyRenderer(SDL_Renderer $renderer) is native('libSDL2') is export {
 
 sub SDL_GL_BindTexture(SDL_Texture $texture, CArray[num] $texw, CArray[num] $texh) returns int is native('libSDL2') is export {*}
 sub SDL_GL_UnBindTexture(SDL_Texture $texture) returns int is native('libSDL2') is export {*}
+
 sub SDL_VideoInit(Str $drivername) returns int is native('libSDL2') is export {*}
 sub SDL_VideoQuit() is native('libSDL2') is export {*}
 
@@ -160,3 +198,117 @@ sub SDL_UpdateWindowSurface(SDL_Window $window) returns int is native('libSDL2')
 
 sub SDL_SetWindowGrab(SDL_Window $window, int $grabbed) is native('libSDL2') is export {*}
 sub SDL_GetWindowGrab(SDL_Window $window) returns int is native('libSDL2') is export {*}
+
+
+enum SDL_EventType (
+   FIRSTEVENT     => 0,
+
+   QUIT           => 0x100,
+
+   "APP_TERMINATING",
+   "APP_LOWMEMORY",
+   "APP_WILLENTERBACKGROUND",
+   "APP_DIDENTERBACKGROUND",
+   "APP_WILLENTERFOREGROUND",
+   "APP_DIDENTERFOREGROUND",
+
+   WINDOWEVENT    => 0x200,
+   "SYSWMEVENT",
+
+   KEYDOWN        => 0x300,
+   "KEYUP",
+   "TEXTEDITING",
+   "TEXTINPUT",
+
+   MOUSEMOTION    => 0x400,
+   "MOUSEBUTTONDOWN",
+   "MOUSEBUTTONUP",
+   "MOUSEWHEEL",
+
+   JOYAXISMOTION  => 0x600,
+   "JOYBALLMOTION",
+   "JOYHATMOTION",
+   "JOYBUTTONDOWN",
+   "JOYBUTTONUP",
+   "JOYDEVICEADDED",
+   "JOYDEVICEREMOVED",
+
+   CONTROLLERAXISMOTION  => 0x650,
+   "CONTROLLERBUTTONDOWN",
+   "CONTROLLERBUTTONUP",
+   "CONTROLLERDEVICEADDED",
+   "CONTROLLERDEVICEREMOVED",
+   "CONTROLLERDEVICEREMAPPED",
+
+   FINGERDOWN      => 0x700,
+   "FINGERUP",
+   "FINGERMOTION",
+
+   DOLLARGESTURE   => 0x800,
+   "DOLLARRECORD",
+   "MULTIGESTURE",
+
+   CLIPBOARDUPDATE => 0x900,
+
+   DROPFILE        => 0x1000,
+
+   RENDER_TARGETS_RESET => 0x2000,
+   "RENDER_DEVICE_RESET",
+
+   USEREVENT    => 0x8000,
+
+   LASTEVENT    => 0xFFFF,
+);
+
+class SDL_Event is repr('CStruct') {
+    has uint32 $.type;
+    has uint32 $.timestamp;
+    has int32 $.dummy2;
+    has int16 $.dummy3;
+    has int8  $.dummy4;
+}
+
+class SDL_WindowEvent is repr('CStruct') {
+   has uint32 $.type;
+   has uint32 $.timestamp;
+   has uint32 $.windowID;
+   has uint8  $.event;
+   has uint8  $.padding1;
+   has uint8  $.padding2;
+   has uint8  $.padding3;
+   has int32  $.data1;
+   has int32  $.data2;
+}
+
+class SDL_Keysym is repr('CStruct') {
+    has int    $.scancode;
+    has int    $.sym;
+    has uint16 $.mod
+}
+
+class SDL_KeyboardEvent is repr('CStruct') {
+   has uint32 $.type;
+   has uint32 $.timestamp;
+   has uint32 $.windowID;
+   has uint8  $.state;
+   has uint8  $.repeat;
+   has uint8  $.padding2;
+   has uint8  $.padding3;
+   has SDL_Keysym $.keysym;
+}
+
+sub SDL_PollEvent(SDL_Event $event) returns int is native('libSDL2') is export {*}
+
+sub SDL_CastEvent(SDL_Event $event) is export {
+    given $event.type {
+        when WINDOWEVENT {
+            nativecast(SDL_WindowEvent, $event)
+        }
+        when KEYDOWN | KEYUP {
+            nativecast(SDL_KeyboardEvent, $event)
+        }
+        default {
+            $event
+        }
+    }
+}

@@ -78,6 +78,8 @@ class SDL_RendererInfo is repr('CStruct') {
     has Str $.name;
     has int32 $.flags;
     has int32 $.num_texture_formats;
+    # ugly hack because we don't have flattened arrays in cstructs yet
+    has int32 $.texf1; has int32 $.texf2; has int32 $.texf3; has int32 $.texf4; has int32 $.texf5; has int32 $.texf6; has int32 $.texf7; has int32 $.texf8; has int32 $.texf9; has int32 $.texf10; has int32 $.texf11; has int32 $.texf12; has int32 $.texf13; has int32 $.texf14; has int32 $.texf15; has int32 $.texf16;
     has int $.max_texture_width;
     has int $.max_texture_height;
 }
@@ -263,9 +265,12 @@ enum SDL_EventType (
 class SDL_Event is repr('CStruct') {
     has uint32 $.type;
     has uint32 $.timestamp;
-    has int32 $.dummy2;
-    has int16 $.dummy3;
-    has int8  $.dummy4;
+    has int64  $.dummy1;
+    has int64  $.dummy2;
+    has int64  $.dummy3;
+    has int64  $.dummy4;
+    has int64  $.dummy5;
+    has int64  $.dummy6;
 }
 
 class SDL_WindowEvent is repr('CStruct') {

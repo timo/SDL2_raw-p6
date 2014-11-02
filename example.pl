@@ -15,7 +15,7 @@ my CArray[SDL_Renderer] $pass_render .= new;
 $pass_win[0] = SDL_Window;
 $pass_render[0] = SDL_Renderer;
 
-say SDL_CreateWindowAndRenderer(1024, 786, 2, $pass_win, $pass_render);
+say SDL_CreateWindowAndRenderer(1280, 960, 2, $pass_win, $pass_render);
 
 my $window = $pass_win[0];
 my $render = $pass_render[0];
@@ -23,22 +23,28 @@ my $render = $pass_render[0];
 SDL_RenderSetLogicalSize($render, 800, 600);
 
 my @starfields = do for ^4 {
-    my $texture = SDL_CreateTexture($render, PIXELFORMAT_ARGB4444, TARGET, 800, 600);
+    my $texture = SDL_CreateTexture($render, %PIXELFORMAT<ARGB8888>, TARGET, 1200, 1920);
 
-    SDL_SetRenderTarget($render, $texture);
-    SDL_SetRenderDrawColor($render, 0, 0, 0, 0);
-    SDL_RenderClear($render);
-    SDL_SetRenderDrawColor($render, 255, 255, 255, 255 * (1 - $_ * 0.2));
+    say $texture;
 
-    for ^CHUNKSIZE {
-        my ($x, $y) = 800.rand.Int, 600.rand.Int;
+    say SDL_SetRenderTarget($render, $texture);
+    say SDL_SetRenderDrawColor($render, 0, 0, 0, 0);
+    say SDL_RenderClear($render);
+    say SDL_SetRenderDrawColor($render, 255, 255, 255, (255 * (1 - $_ * 0.2)).Int);
+
+    for ^250 {
+        my ($x, $y) = 1200.rand.Int, 960.rand.Int;
         SDL_RenderDrawPoint($render, $x, $y);
-        SDL_RenderDrawPoint($render, $x, $y + 600);
+        SDL_RenderDrawPoint($render, $x, $y + 960);
     }
+
+    say SDL_SetTextureBlendMode($texture, 1);
 
     $texture;
 };
-SDL_SetRenderTarget($render, SDL_Texture);
+say SDL_SetRenderTarget($render, SDL_Texture);
+
+say SDL_SetRenderDrawBlendMode($render, 1);
 
 my num $start = nqp::time_n();
 my $event = SDL_Event.new;
@@ -56,13 +62,14 @@ main: loop {
     SDL_SetRenderDrawColor($render, 0, 0, 0, 0);
     SDL_RenderClear($render);
 
-    my @yoffs  = (nqp::time_n() * 100) % 600 - 600,
-                 (nqp::time_n() *  80) % 600 - 600,
-                 (nqp::time_n() *  50) % 600 - 600,
-                 (nqp::time_n() *  15) % 600 - 600;
+    my @yoffs  = ((nqp::time_n() * -100) % 960).Int,
+                 ((nqp::time_n() *  -80) % 960).Int,
+                 ((nqp::time_n() *  -50) % 960).Int,
+                 ((nqp::time_n() *  -15) % 960).Int;
 
+    SDL_SetRenderDrawColor($render, 255, 255, 255, 255);
     for ^4 {
-        my SDL_Rect $src .= new: x => 0, y => @yoffs[$_], w => 800, h => 600;
+        my SDL_Rect $src .= new: x => 0, y => @yoffs[$_].Int, w => 1200, h => 960;
         SDL_RenderCopy($render, @starfields[$_], $src, SDL_Rect);
     }
 

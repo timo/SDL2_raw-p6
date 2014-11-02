@@ -151,6 +151,12 @@ sub SDL_SetRenderTarget(SDL_Renderer $renderer, SDL_Texture $texture)
         is export
         {*}
 
+sub SDL_UpdateTexture(SDL_Texture $tex, SDL_Rect $rect, OpaquePointer $data, int32 $pitch)
+        returns int
+        is native('libSDL2')
+        is export
+        {*}
+
 sub SDL_SetTextureBlendMode(SDL_Texture $tex, int $blendmode)
         returns int
         is native('libSDL2')

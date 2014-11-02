@@ -181,6 +181,11 @@ sub SDL_SetRenderDrawColor(SDL_Renderer $renderer, int8 $r, int8 $g, int8 $b, in
 
 sub SDL_GetRenderDrawColor(SDL_Renderer $renderer, CArray[uint8] $r, CArray[uint8] $g, CArray[uint8] $b, CArray[uint8] $a) returns int is native('libSDL2') is export {*}
 
+sub SDL_SetRenderDrawBlendMode(SDL_Renderer $renderer, int $blendmode)
+        is native('libSDL2')
+        is export
+        {*}
+
 sub SDL_RenderCopy(SDL_Renderer $renderer, SDL_Texture $src, SDL_Rect $srcrect, SDL_Rect $destrect) returns int is native('libSDL2') is export {*}
 sub SDL_RenderCopyEx(SDL_Renderer $renderer, SDL_Texture $src, SDL_Rect $srcrect, SDL_Rect $destrect, num $angle, SDL_Point $center, int $flip) returns int is native('libSDL2') is export {*}
 
@@ -392,95 +397,95 @@ enum SDL_PackedLayout <
         PACKEDLAYOUT_1010102
     >;
 
-enum SDL_PixelFormat (
-        PIXELFORMAT_UNKNOWN,
-        PIXELFORMAT_INDEX1LSB =>
+our %PIXELFORMAT is export = (
+        UNKNOWN => 0,
+        INDEX1LSB =>
             _pxfmt(PIXELTYPE_INDEX1, BITMAPORDER_4321, 0,
                                    1, 0),
-        PIXELFORMAT_INDEX1MSB =>
+        INDEX1MSB =>
             _pxfmt(PIXELTYPE_INDEX1, BITMAPORDER_1234, 0,
                                    1, 0),
-        PIXELFORMAT_INDEX4LSB =>
+        INDEX4LSB =>
             _pxfmt(PIXELTYPE_INDEX4, BITMAPORDER_4321, 0,
                                    4, 0),
-        PIXELFORMAT_INDEX4MSB =>
+        INDEX4MSB =>
             _pxfmt(PIXELTYPE_INDEX4, BITMAPORDER_1234, 0,
                                    4, 0),
-        PIXELFORMAT_INDEX8 =>
+        INDEX8 =>
             _pxfmt(PIXELTYPE_INDEX8, 0, 0, 8, 1),
-        PIXELFORMAT_RGB332 =>
+        RGB332 =>
             _pxfmt(PIXELTYPE_PACKED8, PACKEDORDER_XRGB,
                                    PACKEDLAYOUT_332, 8, 1),
-        PIXELFORMAT_RGB444 =>
+        RGB444 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_XRGB,
                                    PACKEDLAYOUT_4444, 12, 2),
-        PIXELFORMAT_RGB555 =>
+        RGB555 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_XRGB,
                                    PACKEDLAYOUT_1555, 15, 2),
-        PIXELFORMAT_BGR555 =>
+        BGR555 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_XBGR,
                                    PACKEDLAYOUT_1555, 15, 2),
-        PIXELFORMAT_ARGB4444 =>
+        ARGB4444 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_ARGB,
                                    PACKEDLAYOUT_4444, 16, 2),
-        PIXELFORMAT_RGBA4444 =>
+        RGBA4444 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_RGBA,
                                    PACKEDLAYOUT_4444, 16, 2),
-        PIXELFORMAT_ABGR4444 =>
+        ABGR4444 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_ABGR,
                                    PACKEDLAYOUT_4444, 16, 2),
-        PIXELFORMAT_BGRA4444 =>
+        BGRA4444 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_BGRA,
                                    PACKEDLAYOUT_4444, 16, 2),
-        PIXELFORMAT_ARGB1555 =>
+        ARGB1555 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_ARGB,
                                    PACKEDLAYOUT_1555, 16, 2),
-        PIXELFORMAT_RGBA5551 =>
+        RGBA5551 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_RGBA,
                                    PACKEDLAYOUT_5551, 16, 2),
-        PIXELFORMAT_ABGR1555 =>
+        ABGR1555 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_ABGR,
                                    PACKEDLAYOUT_1555, 16, 2),
-        PIXELFORMAT_BGRA5551 =>
+        BGRA5551 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_BGRA,
                                    PACKEDLAYOUT_5551, 16, 2),
-        PIXELFORMAT_RGB565 =>
+        RGB565 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_XRGB,
                                    PACKEDLAYOUT_565, 16, 2),
-        PIXELFORMAT_BGR565 =>
+        BGR565 =>
             _pxfmt(PIXELTYPE_PACKED16, PACKEDORDER_XBGR,
                                    PACKEDLAYOUT_565, 16, 2),
-        PIXELFORMAT_RGB24 =>
+        RGB24 =>
             _pxfmt(PIXELTYPE_ARRAYU8, ARRAYORDER_RGB, 0,
                                    24, 3),
-        PIXELFORMAT_BGR24 =>
+        BGR24 =>
             _pxfmt(PIXELTYPE_ARRAYU8, ARRAYORDER_BGR, 0,
                                    24, 3),
-        PIXELFORMAT_RGB888 =>
+        RGB888 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_XRGB,
                                    PACKEDLAYOUT_8888, 24, 4),
-        PIXELFORMAT_RGBX8888 =>
+        RGBX8888 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_RGBX,
                                    PACKEDLAYOUT_8888, 24, 4),
-        PIXELFORMAT_BGR888 =>
+        BGR888 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_XBGR,
                                    PACKEDLAYOUT_8888, 24, 4),
-        PIXELFORMAT_BGRX8888 =>
+        BGRX8888 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_BGRX,
                                    PACKEDLAYOUT_8888, 24, 4),
-        PIXELFORMAT_ARGB8888 =>
+        ARGB8888 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_ARGB,
                                    PACKEDLAYOUT_8888, 32, 4),
-        PIXELFORMAT_RGBA8888 =>
+        RGBA8888 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
                                    PACKEDLAYOUT_8888, 32, 4),
-        PIXELFORMAT_ABGR8888 =>
+        ABGR8888 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_ABGR,
                                    PACKEDLAYOUT_8888, 32, 4),
-        PIXELFORMAT_BGRA8888 =>
+        BGRA8888 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_BGRA,
                                    PACKEDLAYOUT_8888, 32, 4),
-        PIXELFORMAT_ARGB2101010 =>
+        ARGB2101010 =>
             _pxfmt(PIXELTYPE_PACKED32, PACKEDORDER_ARGB,
                                    PACKEDLAYOUT_2101010, 32, 4),
    );

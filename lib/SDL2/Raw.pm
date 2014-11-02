@@ -1,21 +1,21 @@
 use NativeCall;
 
 class SDL_Point is repr('CStruct') {
-    has int $.x;
-    has int $.y;
+    has int32 $.x;
+    has int32 $.y;
 }
 
 class SDL_Rect is repr('CStruct') {
-    has int $.x;
-    has int $.y;
-    has int $.w;
-    has int $.h;
+    has int32 $.x;
+    has int32 $.y;
+    has int32 $.w;
+    has int32 $.h;
 }
 class SDL_DisplayMode is repr('CStruct') {
     has uint32 $.format;
-    has int    $.w;
-    has int    $.h;
-    has int    $.refresh_rate;
+    has int32    $.w;
+    has int32    $.h;
+    has int32    $.refresh_rate;
     has OpaquePointer $.driverdata;
 }
 
@@ -80,8 +80,8 @@ class SDL_RendererInfo is repr('CStruct') {
     has int32 $.num_texture_formats;
     # ugly hack because we don't have flattened arrays in cstructs yet
     has int32 $.texf1; has int32 $.texf2; has int32 $.texf3; has int32 $.texf4; has int32 $.texf5; has int32 $.texf6; has int32 $.texf7; has int32 $.texf8; has int32 $.texf9; has int32 $.texf10; has int32 $.texf11; has int32 $.texf12; has int32 $.texf13; has int32 $.texf14; has int32 $.texf15; has int32 $.texf16;
-    has int $.max_texture_width;
-    has int $.max_texture_height;
+    has int32 $.max_texture_width;
+    has int32 $.max_texture_height;
 }
 
 enum SDL_RendererFlags (
@@ -300,8 +300,8 @@ class SDL_WindowEvent is repr('CStruct') {
 }
 
 class SDL_Keysym is repr('CStruct') {
-    has int    $.scancode;
-    has int    $.sym;
+    has int32  $.scancode;
+    has int32  $.sym;
     has uint16 $.mod
 }
 

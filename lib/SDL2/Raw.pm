@@ -199,6 +199,7 @@ sub SDL_RenderClear(SDL_Renderer $renderer) returns int is native('libSDL2') is 
 sub SDL_RenderPresent(SDL_Renderer $renderer) is native('libSDL2') is export {*}
 
 sub SDL_RenderDrawPoint(SDL_Renderer $renderer, int $x, int $y) returns int is native('libSDL2') is export {*}
+sub SDL_RenderDrawLine(SDL_Renderer $renderer, int $x, int $y, int $x2, int $y2) returns int is native('libSDL2') is export {*}
 
 sub SDL_DestroyTexture(SDL_Texture $texture) is native('libSDL2') is export {*}
 sub SDL_DestroyRenderer(SDL_Renderer $renderer) is native('libSDL2') is export {*}
@@ -310,21 +311,15 @@ class SDL_WindowEvent is repr('CStruct') {
    has int32  $.data2;
 }
 
-class SDL_Keysym is repr('CStruct') {
-    has int32  $.scancode;
-    has int32  $.sym;
-    has uint16 $.mod
-}
-
 class SDL_KeyboardEvent is repr('CStruct') {
    has uint32 $.type;
    has uint32 $.timestamp;
    has uint32 $.windowID;
    has uint8  $.state;
    has uint8  $.repeat;
-   has uint8  $.padding2;
-   has uint8  $.padding3;
-   has SDL_Keysym $.keysym;
+   has int32  $.scancode;
+   has int32  $.sym;
+   has uint16  $.mod;
 }
 
 sub SDL_PollEvent(SDL_Event $event) returns int is native('libSDL2') is export {*}

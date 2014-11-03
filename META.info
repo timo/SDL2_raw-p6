@@ -1,7 +1,7 @@
 {
     "name" : "SDL2::Raw",
     "version" : "0.1",
-    "description" : "Raw NativeCall wrapper for libSDL2",
+    "description" : "Sugar-free NativeCall binding for libSDL2",
     "depends" : [ "NativeCall" ],
     "source-url" : "git://github.com/timo/SDL2_Raw.git",
     "author" : "Timo Paulssen",

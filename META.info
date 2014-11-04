@@ -7,9 +7,5 @@
     "author" : "Timo Paulssen",
     "provides": {
         "SDL2::Raw": "lib/SDL2/Raw.pm",
-        "SDL2::Raw::Main": "lib/SDL2/Raw/Main.pm",
-        "SDL2::Raw::Rect": "lib/SDL2/Raw/Rect.pm",
-        "SDL2::Raw::Render": "lib/SDL2/Raw/Render.pm",
-        "SDL2::Raw::Video": "lib/SDL2/Raw/Video.pm"
     }
 }

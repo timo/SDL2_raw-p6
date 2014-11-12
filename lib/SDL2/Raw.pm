@@ -54,7 +54,7 @@ enum SDL_WindowFlags (
 );
 
 enum WindowEventID (
-    'NONE',           # Never used
+    'WINDOW_EVENT_NONE',           # Never used
     'SHOWN',          # Window has been shown
     'HIDDEN',         # Window has been hidden
     'EXPOSED',        # Window has been exposed and should be redrawn
@@ -98,13 +98,13 @@ enum SDL_TextureAccess <
 >;
 
 enum SDL_TextureModulate <
-    NONE
+    TEXTURE_MODULATE_NONE
     COLOR
     ALPHA
 >;
 
 enum SDL_RendererFlip <
-    NONE
+    RENDERER_FLIP_NONE
     HORIZONTAL
     VERTICAL
 >;

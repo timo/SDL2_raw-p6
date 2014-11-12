@@ -6,6 +6,6 @@
     "source-url" : "git://github.com/timo/SDL2_Raw-p6.git",
     "author" : "Timo Paulssen",
     "provides": {
-        "SDL2::Raw": "lib/SDL2/Raw.pm",
+        "SDL2::Raw": "lib/SDL2/Raw.pm"
     }
 }

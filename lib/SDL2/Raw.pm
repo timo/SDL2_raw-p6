@@ -322,6 +322,40 @@ class SDL_KeyboardEvent is repr('CStruct') {
    has uint16  $.mod;
 }
 
+class SDL_MouseMotionEvent is repr('CStruct') {
+    has uint32 $.type;
+    has uint32 $.timestamp;
+    has uint32 $.windowID;
+    has uint32 $.which;
+    has uint32 $.state;
+    has int32  $.x;
+    has int32  $.y;
+    has int32  $.xrel;
+    has int32  $.yrel;
+}
+
+class SDL_MouseButtonEvent is repr('CStruct') {
+    has uint32 $.type;
+    has uint32 $.timestamp;
+    has uint32 $.windowID;
+    has uint32 $.which;
+    has uint8  $.button;
+    has uint8  $.state;
+    has uint8  $.clicks;
+    has uint8  $.padding1;
+    has int32  $.x;
+    has int32  $.y;
+}
+
+class SDL_MouseWheelEvent is repr('CStruct') {
+    has uint32 $.type;
+    has uint32 $.timestamp;
+    has uint32 $.windowID;
+    has uint32 $.which;
+    has int32  $.x;
+    has int32  $.y;
+}
+
 sub SDL_PollEvent(SDL_Event $event) returns int is native('libSDL2') is export {*}
 
 sub SDL_CastEvent(SDL_Event $event) is export {
@@ -331,6 +365,15 @@ sub SDL_CastEvent(SDL_Event $event) is export {
         }
         when KEYDOWN | KEYUP {
             nativecast(SDL_KeyboardEvent, $event)
+        }
+        when MOUSEBUTTONUP | MOUSEBUTTONDOWN {
+            nativecast(SDL_MouseButtonEvent, $event)
+        }
+        when MOUSEMOTION {
+            nativecast(SDL_MouseMotionEvent, $event)
+        }
+        when MOUSEWHEEL {
+            nativecast(SDL_MouseWheelEvent, $event)
         }
         default {
             $event

@@ -55,14 +55,14 @@ enum SDL_WindowFlags (
 
 enum WindowEventID (
     'WINDOW_EVENT_NONE',           # Never used
-    'SHOWN',          # Window has been shown
-    'HIDDEN',         # Window has been hidden
+    'EVENT_SHOWN',          # Window has been shown
+    'EVENT_HIDDEN',         # Window has been hidden
     'EXPOSED',        # Window has been exposed and should be redrawn
     'MOVED',          # Window has been moved to data1', data2
     'RESIZED',        # Window has been resized to data1xdata2
     'SIZE_CHANGED',   # The window size has changed', either as a result of an API call or through the system or user changing the window size.
-    'MINIMIZED',      # Window has been minimized
-    'MAXIMIZED',      # Window has been maximized
+    'EVENT_MINIMIZED',      # Window has been minimized
+    'EVENT_MAXIMIZED',      # Window has been maximized
     'RESTORED',       # Window has been restored to normal size and position
     'ENTER',          # Window has gained mouse focus
     'LEAVE',          # Window has lost mouse focus

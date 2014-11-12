@@ -356,7 +356,9 @@ class SDL_MouseWheelEvent is repr('CStruct') {
     has int32  $.y;
 }
 
-sub SDL_PollEvent(SDL_Event $event) returns int is native('libSDL2') is export {*}
+sub SDL_PollEvent(SDL_Event $event) returns int32 is native('libSDL2') is export {*}
+sub SDL_WaitEvent(SDL_Event $event) returns int32 is native('libSDL2') is export {*}
+sub SDL_WaitEventTimeout(SDL_Event $event, int32 $timeout) returns int32 is native('libSDL2') is export {*}
 
 sub SDL_CastEvent(SDL_Event $event) is export {
     given $event.type {
@@ -380,6 +382,13 @@ sub SDL_CastEvent(SDL_Event $event) is export {
         }
     }
 }
+
+our constant SDL_QUERY   = -1;
+our constant SDL_IGNORE  =  0;
+our constant SDL_DISABLE =  0;
+our constant SDL_ENABLE  =  1;
+
+sub SDL_EventState(int32 $type, int32 $state) returns uint8 is native('libSDL2') is export {*}
 
 my sub _pxfmt($type, $order, $layout, $bits, $bytes) {
     (1 +< 28) +| ($type +< 24) +| ($order +< 20) +| ($layout +< 16) +| ($bits +< 8) +| $bytes

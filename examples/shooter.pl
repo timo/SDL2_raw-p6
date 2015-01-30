@@ -277,10 +277,11 @@ main: loop {
     }
 
     SDL_RenderPresent($render);
+    nqp::force_gc() if 3.rand < 1;
     @times.push: nqp::time_n() - $start;
 
     $last_frame_start = $start;
-    sleep(1 / 50);
+    #sleep(1 / 50);
 }
 
 SDL_Quit();

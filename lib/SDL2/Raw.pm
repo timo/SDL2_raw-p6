@@ -212,6 +212,9 @@ sub SDL_RenderPresent(SDL_Renderer $renderer) is native($lib) is export {*}
 sub SDL_RenderDrawPoint(SDL_Renderer $renderer, int $x, int $y) returns int is native($lib) is export {*}
 sub SDL_RenderDrawLine(SDL_Renderer $renderer, int $x, int $y, int $x2, int $y2) returns int is native($lib) is export {*}
 
+sub SDL_RenderDrawRect(SDL_Renderer $renderer, SDL_Rect $rect) returns int is native($lib) is export {*}
+sub SDL_RenderFillRect(SDL_Renderer $renderer, SDL_Rect $rect) returns int is native($lib) is export {*}
+
 sub SDL_DestroyTexture(SDL_Texture $texture) is native($lib) is export {*}
 sub SDL_DestroyRenderer(SDL_Renderer $renderer) is native($lib) is export {*}
 

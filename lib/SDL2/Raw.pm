@@ -232,7 +232,7 @@ sub SDL_GetNumVideoDisplays() returns int is native($lib) is export {*}
 sub SDL_GetDisplayName(int $index) returns Str is native($lib) is export {*}
 sub SDL_GetDisplayBounds(int $index, SDL_Rect $rect) returns int is native($lib) is export {*}
 
-sub SDL_CreateWindow(Str $title, int $x, int $y, int $w, int $h, uint32 $flags) returns SDL_Window is native($lib) is export {*}
+sub SDL_CreateWindow(Str $title, int $x, int $y, int $w, int $h, int32 $flags) returns SDL_Window is native($lib) is export {*}
 sub SDL_SetWindowTitle(SDL_Window $window, Str $title) returns Str is native($lib) is export {*}
 sub SDL_GetWindowTitle(SDL_Window $window) returns Str is native($lib) is export {*}
 

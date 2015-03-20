@@ -263,8 +263,8 @@ main: loop {
 
     SDL_SetRenderDrawColor($render, 255, 255, 255, 255);
     for ^4 {
-        my SDL_Rect $src .= new: x => 0, y => @yoffs.at_pos($_).Int, w => 1200, h => 960;
-        SDL_RenderCopy($render, @starfields.at_pos($_), $src, SDL_Rect);
+        my SDL_Rect $src .= new: x => 0, y => @yoffs.AT-POS($_).Int, w => 1200, h => 960;
+        SDL_RenderCopy($render, @starfields.AT-POS($_), $src, SDL_Rect);
     }
 
     for @enemies {

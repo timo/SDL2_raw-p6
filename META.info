@@ -2,7 +2,7 @@
     "name" : "SDL2::Raw",
     "version" : "0.1",
     "description" : "Sugar-free NativeCall binding for libSDL2",
-    "depends" : [ ],
+    "depends" : [ "LWP::Simple" ],
     "source-url" : "git://github.com/timo/SDL2_Raw-p6.git",
     "author" : "Timo Paulssen",
     "provides": {

@@ -60,27 +60,27 @@ my @starfields = do for ^4 {
 SDL_SetRenderTarget($render, SDL_Texture);
 
 my $enemy_image = Cairo::Image.record(
-    -> $ctx {
-        $ctx.translate(64, 64);
-        $ctx.scale(3, 3);
-        $ctx.move_to(5, -15);
-        $ctx.line_to(-5, -15);
-        $ctx.curve_to(-30, -15, -15, 15, -5, 15);
-        $ctx.line_to(-3, -5);
-        $ctx.line_to(0, 5);
-        $ctx.line_to(3, -5);
-        $ctx.line_to(5, 15);
-        $ctx.curve_to(15, 15, 30, -15, 5, -15);
-        $ctx.line_to(5, -15);
+    -> $_ {
+        .translate(64, 64);
+        .scale(3, 3);
+        .move_to(5, -15);
+        .line_to(-5, -15);
+        .curve_to(-30, -15, -15, 15, -5, 15);
+        .line_to(-3, -5);
+        .line_to(0, 5);
+        .line_to(3, -5);
+        .line_to(5, 15);
+        .curve_to(15, 15, 30, -15, 5, -15);
+        .line_to(5, -15);
 
-        $ctx.line_to(0, -5) :relative;
-        $ctx.line_to(-10, 0) :relative;
-        $ctx.line_to(0, 5) :relative;
+        .line_to(0, -5) :relative;
+        .line_to(-10, 0) :relative;
+        .line_to(0, 5) :relative;
 
-        $ctx.rgb(0.9, 0.2, 0.1);
-        $ctx.fill() :preserve;
-        $ctx.rgb(1, 1, 1);
-        $ctx.stroke();
+        .rgb(0.9, 0.2, 0.1);
+        .fill() :preserve;
+        .rgb(1, 1, 1);
+        .stroke();
     }, 128, 128, Cairo::FORMAT_ARGB32);
 
 my $enemy_texture = SDL_CreateTexture($render, %PIXELFORMAT<ARGB8888>, STATIC, 128, 128);

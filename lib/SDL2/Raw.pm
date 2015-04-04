@@ -9,23 +9,38 @@ BEGIN {
     }
 }
 
-class SDL_Point is repr('CStruct') {
+class SDL_Point is repr('CStruct') is rw {
+    # positional
+    multi method new(Real $x, Real $y) { self.bless(:$x.Int, :$y.Int) }
+    multi method new(Complex $complex) { self.bless(:x($complex.re), :y($complex.im)) }
+
+    # named
+    multi method new(Int(Real) :$x!, Int(Real) :$y!) { self.bless(:$x, :$y) }
+
     has int32 $.x;
     has int32 $.y;
 }
 
-class SDL_Rect is repr('CStruct') {
+class SDL_Rect is repr('CStruct') is rw {
+    # positional
+    multi method new(int $x, int $y, int $w, int $h) { self.bless(:$x, :$y, :$w, :$h) }
+    multi method new(Int(Real) $x, Int(Real) $y, Int(Real) $w, Int(Real) $h) { self.bless(:$x, :$y, :$w, :$h) }
+
+    # named
+    multi method new(int :$x!, int :$y!, int :$w!, int :$h!) { self.bless(:$x, :$y, :$w, :$h) }
+    multi method new(Int(Real) :$x!, Int(Real) :$y!, Int(Real) :$w!, Int(Real) :$h!) { self.bless(:$x, :$y, :$w, :$h) }
+
     has int32 $.x;
     has int32 $.y;
     has int32 $.w;
     has int32 $.h;
 }
-class SDL_DisplayMode is repr('CStruct') {
-    has uint32 $.format;
+class SDL_DisplayMode is repr('CStruct') is rw {
+    has uint32   $.format;
     has int32    $.w;
     has int32    $.h;
     has int32    $.refresh_rate;
-    has OpaquePointer $.driverdata;
+    has Pointer  $.driverdata;
 }
 
 enum SDL_INIT (
@@ -83,7 +98,7 @@ enum WindowEventID (
 our constant SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000;
 our constant SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000;
 
-class SDL_RendererInfo is repr('CStruct') {
+class SDL_RendererInfo is repr('CStruct') is rw {
     has Str $.name;
     has int32 $.flags;
     has int32 $.num_texture_formats;
@@ -136,7 +151,7 @@ sub SDL_GetRenderDriverInfo(int $index, SDL_RendererInfo $info)
 
 sub SDL_CreateWindowAndRenderer(int $width, int $height,
                                 int32 $flags,
-                                CArray[SDL_Window] $win, CArray[SDL_Renderer] $renderer)
+                                Pointer[SDL_Window] $win, Pointer[SDL_Renderer] $renderer)
         returns int
         is native($lib)
         is export
@@ -160,7 +175,7 @@ sub SDL_SetRenderTarget(SDL_Renderer $renderer, SDL_Texture $texture)
         is export
         {*}
 
-sub SDL_UpdateTexture(SDL_Texture $tex, SDL_Rect $rect, OpaquePointer $data, int32 $pitch)
+sub SDL_UpdateTexture(SDL_Texture $tex, SDL_Rect $rect, Pointer $data, int32 $pitch)
         returns int
         is native($lib)
         is export
@@ -172,7 +187,7 @@ sub SDL_SetTextureBlendMode(SDL_Texture $tex, int $blendmode)
         is export
         {*}
 
-sub SDL_GetTextureBlendMode(SDL_Texture $tex, CArray[int] $blendmode)
+sub SDL_GetTextureBlendMode(SDL_Texture $tex, Pointer[int] $blendmode)
         returns int
         is native($lib)
         is export
@@ -184,7 +199,7 @@ sub SDL_RenderSetLogicalSize(SDL_Renderer $renderer, int $w, int $h)
         is export
         {*}
 
-sub SDL_RenderGetLogicalSize(SDL_Renderer $renderer, CArray[int] $w, CArray[int] $h)
+sub SDL_RenderGetLogicalSize(SDL_Renderer $renderer, Pointer[int] $w, Pointer[int] $h)
         is native($lib)
         is export {*}
 
@@ -196,7 +211,7 @@ sub SDL_SetRenderDrawColor(SDL_Renderer $renderer, int8 $r, int8 $g, int8 $b, in
 
 sub SDL_SetTextureColorMod(SDL_Texture $texture, int8 $r, int8 $g, int8 $b) returns int32 is native($lib) is export {*}
 
-sub SDL_GetRenderDrawColor(SDL_Renderer $renderer, CArray[uint8] $r, CArray[uint8] $g, CArray[uint8] $b, CArray[uint8] $a) returns int is native($lib) is export {*}
+sub SDL_GetRenderDrawColor(SDL_Renderer $renderer, Pointer[uint8] $r, Pointer[uint8] $g, Pointer[uint8] $b, Pointer[uint8] $a) returns int is native($lib) is export {*}
 
 sub SDL_SetRenderDrawBlendMode(SDL_Renderer $renderer, int $blendmode)
         is native($lib)
@@ -218,7 +233,7 @@ sub SDL_RenderFillRect(SDL_Renderer $renderer, SDL_Rect $rect) returns int is na
 sub SDL_DestroyTexture(SDL_Texture $texture) is native($lib) is export {*}
 sub SDL_DestroyRenderer(SDL_Renderer $renderer) is native($lib) is export {*}
 
-sub SDL_GL_BindTexture(SDL_Texture $texture, CArray[num] $texw, CArray[num] $texh) returns int is native($lib) is export {*}
+sub SDL_GL_BindTexture(SDL_Texture $texture, Pointer[num] $texw, Pointer[num] $texh) returns int is native($lib) is export {*}
 sub SDL_GL_UnBindTexture(SDL_Texture $texture) returns int is native($lib) is export {*}
 
 sub SDL_VideoInit(Str $drivername) returns int is native($lib) is export {*}
@@ -302,7 +317,7 @@ enum SDL_EventType (
    LASTEVENT    => 0xFFFF,
 );
 
-class SDL_Event is repr('CStruct') {
+class SDL_Event is repr('CStruct') is rw {
     has uint32 $.type;
     has uint32 $.timestamp;
     has int64  $.dummy1;
@@ -313,7 +328,7 @@ class SDL_Event is repr('CStruct') {
     has int64  $.dummy6;
 }
 
-class SDL_WindowEvent is repr('CStruct') {
+class SDL_WindowEvent is repr('CStruct') is rw {
    has uint32 $.type;
    has uint32 $.timestamp;
    has uint32 $.windowID;
@@ -325,7 +340,7 @@ class SDL_WindowEvent is repr('CStruct') {
    has int32  $.data2;
 }
 
-class SDL_KeyboardEvent is repr('CStruct') {
+class SDL_KeyboardEvent is repr('CStruct') is rw {
    has uint32 $.type;
    has uint32 $.timestamp;
    has uint32 $.windowID;
@@ -336,7 +351,7 @@ class SDL_KeyboardEvent is repr('CStruct') {
    has uint16  $.mod;
 }
 
-class SDL_MouseMotionEvent is repr('CStruct') {
+class SDL_MouseMotionEvent is repr('CStruct') is rw {
     has uint32 $.type;
     has uint32 $.timestamp;
     has uint32 $.windowID;
@@ -348,7 +363,7 @@ class SDL_MouseMotionEvent is repr('CStruct') {
     has int32  $.yrel;
 }
 
-class SDL_MouseButtonEvent is repr('CStruct') {
+class SDL_MouseButtonEvent is repr('CStruct') is rw {
     has uint32 $.type;
     has uint32 $.timestamp;
     has uint32 $.windowID;
@@ -361,7 +376,7 @@ class SDL_MouseButtonEvent is repr('CStruct') {
     has int32  $.y;
 }
 
-class SDL_MouseWheelEvent is repr('CStruct') {
+class SDL_MouseWheelEvent is repr('CStruct') is rw {
     has uint32 $.type;
     has uint32 $.timestamp;
     has uint32 $.windowID;

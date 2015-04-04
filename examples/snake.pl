@@ -10,16 +10,11 @@ constant FIELDH = H div 32;
 
 SDL_Init(VIDEO);
 
-my CArray[SDL_Window] $pass_win .= new;
-my CArray[SDL_Renderer] $pass_render .= new;
-
-$pass_win[0] = SDL_Window;
-$pass_render[0] = SDL_Renderer;
-
-say SDL_CreateWindowAndRenderer(W, H, 2, $pass_win, $pass_render);
-
-my $window = $pass_win[0];
-my $render = $pass_render[0];
+my $window = SDL_CreateWindow("Snake",
+        SDL_WINDOWPOS_CENTERED_MASK, SDL_WINDOWPOS_CENTERED_MASK,
+        W, H,
+        OPENGL);
+my $render = SDL_CreateRenderer($window, -1, ACCELERATED +| PRESENTVSYNC);
 
 my $snake_image = Cairo::Image.record(
     -> $_ {
@@ -43,7 +38,7 @@ my $snake_image = Cairo::Image.record(
         .rgb: 0, 0, 0;
         .stroke;
         .restore;
-    }, 128, 128, FORMAT_ARGB32);
+    }, 128, 128, Cairo::FORMAT_ARGB32);
 
 my $snake_texture = SDL_CreateTexture($render, %PIXELFORMAT<ARGB8888>, STATIC, 128, 128);
 SDL_UpdateTexture($snake_texture, SDL_Rect.new(:x(0), :y(0), :w(128), :h(128)), $snake_image.data, $snake_image.stride // 128 * 4);
@@ -152,13 +147,13 @@ main: loop {
         SDL_SetTextureColorMod($snake_texture, 255, (cos((++$) / 2) * 100 + 155).round, 255);
         SDL_RenderCopy($render, $snake_texture,
             $snakepiece_srcrect,
-            SDL_Rect.new(:x(.re.Int * 32), :y(.im.Int * 32), :w(32), :h(32)));
+            SDL_Rect.new(.re * 32, .im * 32, 32, 32));
     }
     SDL_SetTextureColorMod($snake_texture, 255, 255, 255);
     for @noms {
         SDL_RenderCopy($render, $snake_texture,
             $foodpiece_srcrect,
-            SDL_Rect.new(:x(.re.Int * 32), :y(.im.Int * 32), :w(32), :h(32)));
+            SDL_Rect.new(.re * 32, .im * 32, 32, 32));
     }
 
     SDL_RenderPresent($render);

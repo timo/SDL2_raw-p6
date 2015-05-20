@@ -1,6 +1,7 @@
 use NativeCall;
 use SDL2::Raw;
 use Cairo;
+use nqp;
 
 constant W = 1280;
 constant H = 960;

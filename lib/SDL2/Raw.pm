@@ -5,7 +5,7 @@ BEGIN {
     if $*VM.config<dll> ~~ /dll/ {
         $lib = 'SDL2';
     } else {
-        $lib = 'libSDL2';
+        $lib = 'SDL2';
     }
 }
 

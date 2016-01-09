@@ -157,7 +157,7 @@ main: loop {
         }
     }
 
-    for @bullets, @shieldbounces {
+    for flat @bullets, @shieldbounces {
         $_.pos += $dt * $_.vel;
         $_.lifetime -= $dt if defined $_.lifetime;
     }

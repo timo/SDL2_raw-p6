@@ -128,7 +128,7 @@ main: loop {
         #@snakepieces.unshift: @snakepieces[0] + $snakedir;
 
 
-        if @snakepieces[2..*].first-index({ $_ == @snakepieces[0] }) -> $idx {
+        if @snakepieces[2..*].first({ $_ == @snakepieces[0] }, :k) -> $idx {
             @snakepieces = @snakepieces[0..($idx + 1)];
         }
 

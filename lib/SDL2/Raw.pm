@@ -1,12 +1,21 @@
 use NativeCall;
 
 my Str $lib;
-BEGIN {
-    if $*VM.config<dll> ~~ /dll/ {
-        $lib = 'SDL2';
-    } else {
-        $lib = 'libSDL2';
-    }
+if $*VM.config<dll> ~~ /dll/ {
+  # Windows-specific library name.
+  # What should be looked for: SDL2.dll
+  $lib = 'SDL2';
+} else if $*VM.config<dll> ~~ /dylib/ {
+  # Mac-specific library name.
+  # What should be looked for: libSDL2.dylib
+  # TODO: Test that this branch is properly working.
+  $lib = 'SDL2';
+} else if $*VM.config<dll> ~~ /so/ {
+  # Linux-specific library name.
+  # What should be looked for: libSDL2.so
+  $lib = 'SDL2';
+} else {
+  die "Unsupported platform. Please add a branch to $FILE:$LINE for your platform dynamic library type."
 }
 
 

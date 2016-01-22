@@ -1,22 +1,33 @@
 use NativeCall;
 
-my Str $lib;
-if $*VM.config<dll> ~~ /dll/ {
-  # Windows-specific library name.
-  # What should be looked for: SDL2.dll
-  $lib = 'SDL2';
-} else if $*VM.config<dll> ~~ /dylib/ {
-  # Mac-specific library name.
-  # What should be looked for: libSDL2.dylib
-  # TODO: Test that this branch is properly working.
-  $lib = 'SDL2';
-} else if $*VM.config<dll> ~~ /so/ {
-  # Linux-specific library name.
-  # What should be looked for: libSDL2.so
-  $lib = 'SDL2';
-} else {
-  die "Unsupported platform. Please add a branch to $FILE:$LINE for your platform dynamic library type."
+my Str $lib = "";
+my &libFunc = sub {$lib};
+BEGIN {
+  if $*VM.config<dll> ~~ /dll/ {
+    # Windows-specific library name.
+    # What should be looked for: SDL2.dll
+
+    # Test the current directory for the dll, which is the most likely place
+    # that it would exist on Windows.
+    if "./SDL2.dll".IO.e {
+      $lib = "./SDL2.dll".IO.abspath;
+    } else {
+      $lib = 'SDL2';
+    }
+  } elsif $*VM.config<dll> ~~ /dylib/ {
+    # Mac-specific library name.
+    # What should be looked for: libSDL2.dylib
+    # TODO: Test that this branch is properly working.
+    $lib = 'SDL2';
+  } elsif $*VM.config<dll> ~~ /so/ {
+    # Linux-specific library name.
+    # What should be looked for: libSDL2.so
+    $lib = 'SDL2';
+  } else {
+    die "Unsupported platform. Please add a branch to $?FILE:$?LINE for your platform dynamic library type."
+  }
 }
+say "lib: $lib";
 
 
 ################################################################################
@@ -389,145 +400,145 @@ enum SDL_GLProfile (
 ################################################################################
 
 # Initialization/shutdown
-sub SDL_Init(int32 $flags) is native($lib, v1.1.0) is export {*}
-sub SDL_Quit() is native($lib, v1.1.0) is export {*}
-sub SDL_GetError() returns Str is native($lib, v1.1.0) is export {*}
+sub SDL_Init(int32 $flags) is native($lib) is export {*}
+sub SDL_Quit() is native($lib) is export {*}
+sub SDL_GetError() returns Str is native($lib) is export {*}
 
 # Window functions
-sub SDL_CreateWindow(Str $title, int32 $x, int32 $y, int32 $w, int32 $h, int32 $flags) returns SDL_Window is native($lib, v1.1.0) is export {*}
+sub SDL_CreateWindow(Str $title, int32 $x, int32 $y, int32 $w, int32 $h, int32 $flags) returns SDL_Window is native($lib) is export {*}
 sub SDL_CreateWindowAndRenderer(int32 $width, int32 $height,
                                 int32 $flags,
                                 Pointer[SDL_Window] $win, Pointer[SDL_Renderer] $renderer)
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export {*}
-sub SDL_DestroyWindow(SDL_Window $window) is native($lib, v1.1.0) is export {*}
-sub SDL_SetWindowTitle(SDL_Window $window, Str $title) returns Str is native($lib, v1.1.0) is export {*}
-sub SDL_GetWindowTitle(SDL_Window $window) returns Str is native($lib, v1.1.0) is export {*}
+sub SDL_DestroyWindow(SDL_Window $window) is native($lib) is export {*}
+sub SDL_SetWindowTitle(SDL_Window $window, Str $title) returns Str is native($lib) is export {*}
+sub SDL_GetWindowTitle(SDL_Window $window) returns Str is native($lib) is export {*}
 
-sub SDL_UpdateWindowSurface(SDL_Window $window) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_UpdateWindowSurface(SDL_Window $window) returns int32 is native($lib) is export {*}
 
-sub SDL_SetWindowGrab(SDL_Window $window, int32 $grabbed) is native($lib, v1.1.0) is export {*}
-sub SDL_GetWindowGrab(SDL_Window $window) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_SetWindowGrab(SDL_Window $window, int32 $grabbed) is native($lib) is export {*}
+sub SDL_GetWindowGrab(SDL_Window $window) returns int32 is native($lib) is export {*}
 
-sub SDL_ShowWindow(SDL_Window $window) is native($lib, v1.1.0) is export {*}
+sub SDL_ShowWindow(SDL_Window $window) is native($lib) is export {*}
 
 # Renderer functions
 sub SDL_CreateRenderer(SDL_Window $win, int32 $index, int32 $flags)
         returns SDL_Renderer
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
 sub SDL_SetRenderTarget(SDL_Renderer $renderer, SDL_Texture $texture)
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
 sub SDL_GetNumRenderDrivers()
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
 sub SDL_GetRenderDriverInfo(int32 $index, SDL_RendererInfo $info)
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
 sub SDL_RenderSetLogicalSize(SDL_Renderer $renderer, int32 $w, int32 $h)
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
 sub SDL_RenderGetLogicalSize(SDL_Renderer $renderer, Pointer[int32] $w, Pointer[int32] $h)
-        is native($lib, v1.1.0)
+        is native($lib)
         is export {*}
 
 sub SDL_SetRenderDrawColor(SDL_Renderer $renderer, int8 $r, int8 $g, int8 $b, int8 $a)
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
-sub SDL_GetRenderDrawColor(SDL_Renderer $renderer, Pointer[uint8] $r, Pointer[uint8] $g, Pointer[uint8] $b, Pointer[uint8] $a) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_GetRenderDrawColor(SDL_Renderer $renderer, Pointer[uint8] $r, Pointer[uint8] $g, Pointer[uint8] $b, Pointer[uint8] $a) returns int32 is native($lib) is export {*}
 
-sub SDL_RenderCopy(SDL_Renderer $renderer, SDL_Texture $src, SDL_Rect $srcrect, SDL_Rect $destrect) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_RenderCopyEx(SDL_Renderer $renderer, SDL_Texture $src, SDL_Rect $srcrect, SDL_Rect $destrect, num32 $angle, SDL_Point32 $center, int32 $flip) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_RenderCopy(SDL_Renderer $renderer, SDL_Texture $src, SDL_Rect $srcrect, SDL_Rect $destrect) returns int32 is native($lib) is export {*}
+sub SDL_RenderCopyEx(SDL_Renderer $renderer, SDL_Texture $src, SDL_Rect $srcrect, SDL_Rect $destrect, num32 $angle, SDL_Point32 $center, int32 $flip) returns int32 is native($lib) is export {*}
 
-sub SDL_RenderClear(SDL_Renderer $renderer) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_RenderPresent(SDL_Renderer $renderer) is native($lib, v1.1.0) is export {*}
+sub SDL_RenderClear(SDL_Renderer $renderer) returns int32 is native($lib) is export {*}
+sub SDL_RenderPresent(SDL_Renderer $renderer) is native($lib) is export {*}
 
-sub SDL_RenderDrawPoint(SDL_Renderer $renderer, int32 $x, int32 $y) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_RenderDrawLine(SDL_Renderer $renderer, int32 $x, int32 $y, int32 $x2, int32 $y2) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_RenderDrawPoint(SDL_Renderer $renderer, int32 $x, int32 $y) returns int32 is native($lib) is export {*}
+sub SDL_RenderDrawLine(SDL_Renderer $renderer, int32 $x, int32 $y, int32 $x2, int32 $y2) returns int32 is native($lib) is export {*}
 
-sub SDL_RenderDrawRect(SDL_Renderer $renderer, SDL_Rect $rect) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_RenderFillRect(SDL_Renderer $renderer, SDL_Rect $rect) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_RenderDrawRect(SDL_Renderer $renderer, SDL_Rect $rect) returns int32 is native($lib) is export {*}
+sub SDL_RenderFillRect(SDL_Renderer $renderer, SDL_Rect $rect) returns int32 is native($lib) is export {*}
 
 # Texture functions
 sub SDL_CreateTexture(SDL_Renderer $renderer, int32 $format, int32 $access, int32 $w, int32 $h)
         returns SDL_Texture
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
 sub SDL_UpdateTexture(SDL_Texture $tex, SDL_Rect $rect, Pointer $data, int32 $pitch)
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
 sub SDL_SetTextureBlendMode(SDL_Texture $tex, int32 $blendmode)
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
 sub SDL_GetTextureBlendMode(SDL_Texture $tex, Pointer[int32] $blendmode)
         returns int32
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
-sub SDL_SetTextureColorMod(SDL_Texture $texture, int8 $r, int8 $g, int8 $b) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_SetTextureColorMod(SDL_Texture $texture, int8 $r, int8 $g, int8 $b) returns int32 is native($lib) is export {*}
 
 sub SDL_SetRenderDrawBlendMode(SDL_Renderer $renderer, int32 $blendmode)
-        is native($lib, v1.1.0)
+        is native($lib)
         is export
         {*}
 
-sub SDL_DestroyTexture(SDL_Texture $texture) is native($lib, v1.1.0) is export {*}
-sub SDL_DestroyRenderer(SDL_Renderer $renderer) is native($lib, v1.1.0) is export {*}
+sub SDL_DestroyTexture(SDL_Texture $texture) is native($lib) is export {*}
+sub SDL_DestroyRenderer(SDL_Renderer $renderer) is native($lib) is export {*}
 
-sub SDL_VideoInit(Str $drivername) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_VideoQuit() is native($lib, v1.1.0) is export {*}
+sub SDL_VideoInit(Str $drivername) returns int32 is native($lib) is export {*}
+sub SDL_VideoQuit() is native($lib) is export {*}
 
-sub SDL_GetNumVideoDrivers() returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_GetVideoDriver(int32 $index) returns Str is native($lib, v1.1.0) is export {*}
-sub SDL_GetCurrentVideoDriver() returns Str is native($lib, v1.1.0) is export {*}
+sub SDL_GetNumVideoDrivers() returns int32 is native($lib) is export {*}
+sub SDL_GetVideoDriver(int32 $index) returns Str is native($lib) is export {*}
+sub SDL_GetCurrentVideoDriver() returns Str is native($lib) is export {*}
 
-sub SDL_GetNumVideoDisplays() returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_GetDisplayName(int32 $index) returns Str is native($lib, v1.1.0) is export {*}
-sub SDL_GetDisplayBounds(int32 $index, SDL_Rect $rect) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_GetNumVideoDisplays() returns int32 is native($lib) is export {*}
+sub SDL_GetDisplayName(int32 $index) returns Str is native($lib) is export {*}
+sub SDL_GetDisplayBounds(int32 $index, SDL_Rect $rect) returns int32 is native($lib) is export {*}
 
 # GL Functions
-sub SDL_GL_BindTexture(SDL_Texture $texture, Pointer[num32] $texw, Pointer[num32] $texh) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_GL_UnBindTexture(SDL_Texture $texture) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_GL_BindTexture(SDL_Texture $texture, Pointer[num32] $texw, Pointer[num32] $texh) returns int32 is native($lib) is export {*}
+sub SDL_GL_UnBindTexture(SDL_Texture $texture) returns int32 is native($lib) is export {*}
 
-sub SDL_GL_CreateContext(SDL_Window $window) returns SDL_GLContext is native($lib, v1.1.0) is export {*}
-sub SDL_GL_DeleteContext(SDL_GLContext $context) is native($lib, v1.1.0) is export {*}
-sub SDL_GL_MakeCurrent(SDL_Window $window, SDL_GLContext $context) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_GL_CreateContext(SDL_Window $window) returns SDL_GLContext is native($lib) is export {*}
+sub SDL_GL_DeleteContext(SDL_GLContext $context) is native($lib) is export {*}
+sub SDL_GL_MakeCurrent(SDL_Window $window, SDL_GLContext $context) returns int32 is native($lib) is export {*}
 
-sub SDL_GL_SetAttribute(int32 $attr, int32 $value) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_GL_SwapWindow(SDL_Window $window) is native($lib, v1.1.0) is export {*}
+sub SDL_GL_SetAttribute(int32 $attr, int32 $value) returns int32 is native($lib) is export {*}
+sub SDL_GL_SwapWindow(SDL_Window $window) is native($lib) is export {*}
 
 # Event functions
-sub SDL_PollEvent(SDL_Event $event) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_WaitEvent(SDL_Event $event) returns int32 is native($lib, v1.1.0) is export {*}
-sub SDL_WaitEventTimeout(SDL_Event $event, int32 $timeout) returns int32 is native($lib, v1.1.0) is export {*}
+sub SDL_PollEvent(SDL_Event $event) returns int32 is native($lib) is export {*}
+sub SDL_WaitEvent(SDL_Event $event) returns int32 is native($lib) is export {*}
+sub SDL_WaitEventTimeout(SDL_Event $event, int32 $timeout) returns int32 is native($lib) is export {*}
 
 sub SDL_CastEvent(SDL_Event $event) is export {
   given $event.type {
@@ -560,7 +571,7 @@ our constant SDL_IGNORE  =  0;
 our constant SDL_DISABLE =  0;
 our constant SDL_ENABLE  =  1;
 
-sub SDL_EventState(int32 $type, int32 $state) returns uint8 is native($lib, v1.1.0) is export {*}
+sub SDL_EventState(int32 $type, int32 $state) returns uint8 is native($lib) is export {*}
 
 my sub _pxfmt($type, $order, $layout, $bits, $bytes) {
     (1 +< 28) +| ($type +< 24) +| ($order +< 20) +| ($layout +< 16) +| ($bits +< 8) +| $bytes

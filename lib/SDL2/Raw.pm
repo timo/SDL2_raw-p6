@@ -163,6 +163,12 @@ sub SDL_CreateRenderer(SDL_Window $win, int32 $index, int32 $flags)
         is export
         {*}
 
+sub SDL_GetRendererInfo(SDL_Renderer $renderer, SDL_RendererInfo $info)
+        returns int32
+        is native($lib)
+        is export
+        {*}
+
 sub SDL_CreateTexture(SDL_Renderer $renderer, int32 $format, int32 $access, int32 $w, int32 $h)
         returns SDL_Texture
         is native($lib)
@@ -181,7 +187,7 @@ sub SDL_UpdateTexture(SDL_Texture $tex, SDL_Rect $rect, Pointer $data, int32 $pi
         is export
         {*}
 
-sub SDL_LockTexture(SDL_Texture $tex, SDL_Rect $rect, Pointer $pixdata is rw, int32 $pitch is rw)
+sub SDL_LockTexture(SDL_Texture $tex, SDL_Rect $rect, Pointer[int64] $pixdata, int32 $pitch is rw)
         returns int32
         is native($lib)
         is export
@@ -429,6 +435,12 @@ our constant SDL_DISABLE =  0;
 our constant SDL_ENABLE  =  1;
 
 sub SDL_EventState(int32 $type, int32 $state) returns uint8 is native($lib) is export {*}
+
+
+sub SDL_GetError returns Str is native($lib) is export {*}
+
+sub SDL_ClearError is native($lib) is export {*}
+
 
 my sub _pxfmt($type, $order, $layout, $bits, $bytes) {
     (1 +< 28) +| ($type +< 24) +| ($order +< 20) +| ($layout +< 16) +| ($bits +< 8) +| $bytes

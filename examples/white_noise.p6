@@ -1,27 +1,16 @@
 use NativeCall;
- 
-class SDL_Window is repr('CStruct') {}
-class SDL_Renderer is repr('CStruct') {}
- 
+use SDL2::Raw;
+
 my ($w, $h) = 320, 240;
 my SDL_Window $window;
 my SDL_Renderer $renderer;
- 
+
 constant $sdl-lib = 'SDL2';
 constant SDL_INIT_VIDEO = 0x00000020;
 constant SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000;
 constant SDL_WINDOW_SHOWN = 0x00000004;
- 
-sub SDL_Init(int32 $flag) returns int32 is native($sdl-lib) {*}
-sub SDL_Quit() is native($sdl-lib) {*}
- 
-sub SDL_CreateWindow(Str $title, int $x, int $y, int $w, int $h, int32 $flag) returns SDL_Window is native($sdl-lib) {*}
-sub SDL_CreateRenderer(SDL_Window $, int $, int $) returns SDL_Renderer is native($sdl-lib) {*}
-sub SDL_SetRenderDrawColor(SDL_Renderer $, int $r, int $g, int $b, int $a) returns Int is native($sdl-lib) {*}
-sub SDL_RenderClear(SDL_Renderer $) returns Int is native($sdl-lib) {*}
-sub SDL_RenderDrawPoint( SDL_Renderer $, int32 $x, int32 $y ) returns Int is native($sdl-lib) {*}
+
 sub SDL_RenderDrawPoints( SDL_Renderer $, CArray[int32] $points, int32 $count ) returns Int is native($sdl-lib) {*}
-sub SDL_RenderPresent(SDL_Renderer $) is native($sdl-lib) {*}
 
 my CArray[int32] $points .= new;
 
@@ -62,11 +51,21 @@ $window = SDL_CreateWindow(
     SDL_WINDOW_SHOWN
 );
 $renderer = SDL_CreateRenderer( $window, -1, 1 );
-loop {
+
+my $event = SDL_Event.new;
+
+main: loop {
+    while SDL_PollEvent($event) {
+        my $casted_event = SDL_CastEvent($event);
+
+        given $casted_event {
+            when *.type == QUIT {
+                last main;
+            }
+        }
+    }
+
     my $then = now;
     render();
     note "{1 / (now - $then)} fps";
 }
-END { SDL_Quit() }
-
-Signal(SIGTERM).tap({ SDL_Quit(); exit(0) });

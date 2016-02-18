@@ -10,24 +10,34 @@ constant SDL_INIT_VIDEO = 0x00000020;
 constant SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000;
 constant SDL_WINDOW_SHOWN = 0x00000004;
 
-sub SDL_RenderDrawPoints( SDL_Renderer $, CArray[int32] $points, int32 $count ) returns Int is native($sdl-lib) {*}
+sub SDL_RenderDrawPoints( SDL_Renderer $, CArray[int32] $points, int32 $count ) returns int32 is native($sdl-lib) {*}
+
+my $noise_texture = SDL_CreateTexture($renderer, %PIXELFORMAT<ARGB8888>, STREAMING, $w, $h);
 
 my CArray[int32] $points .= new;
 
 sub render {
-    SDL_SetRenderDrawColor($renderer, 0, 0, 0, 0);
-    SDL_RenderClear($renderer);
-    SDL_SetRenderDrawColor($renderer, 255, 255, 255, 0);
-    my int $cur = 0;
-    loop (my int $i; $i < $w; $i = $i + 1) {
-        loop (my int $j; $j < $h; $j = $j + 1) {
-            if Bool.pick {
-                $points[$cur++] = $i;
-                $points[$cur++] = $j;
-            }
+    my $pixdata = Pointer[int32].new;
+    my int32 $pitch;
+    my int32 $cursor;
+    SDL_LockTexture($noise_texture, SDL_Rect, $pixdata, $pitch);
+
+    say $pixdata;
+
+    $pixdata = nativecast(CArray[int32], $pixdata);
+
+    say $pixdata;
+
+    loop (my int $row; $row < $h; $row = $row + 1) {
+        loop (my int $col; $col < $w; $col = $col + 1) {
+            $pixdata[$cursor + $col] = Bool.pick ?? 0xff112233 !! 0xffffffff;
         }
+        $cursor += $pitch;
     }
-    SDL_RenderDrawPoints( $renderer, $points, $cur div 2 );
+
+    SDL_UnlockTexture($noise_texture);
+
+    SDL_RenderCopy($renderer, $noise_texture, SDL_Rect, SDL_Rect);
     SDL_RenderPresent($renderer);
 }
 

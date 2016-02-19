@@ -31,13 +31,14 @@ say %PIXELFORMAT.pairs.grep({ $_.value == any($renderer_info.texf1, $renderer_in
 
 my $noise_texture = SDL_CreateTexture($renderer, %PIXELFORMAT<ARGB8888>, STREAMING, $w, $h);
 
-my CArray[int32] $points .= new;
+#my CArray[int32] $points .= new;
+
+my $pixdatabuf = CArray[int64].new(0, 1234, 1234, 1234);
 
 sub render {
-    my $pixdatabuf = CArray[int64].new(0, 1234, 1234, 1234);
-    my $pixdata = nativecast(Pointer[int64], $pixdatabuf);
     my int $pitch;
     my int $cursor;
+    my $pixdata = nativecast(Pointer[int64], $pixdatabuf);
     SDL_LockTexture($noise_texture, SDL_Rect, $pixdata, $pitch);
 
     $pitch div= 4; # pitch is in bytes, our addresses are in 32bit chunks
@@ -55,9 +56,7 @@ sub render {
     SDL_UnlockTexture($noise_texture);
 
     SDL_RenderCopy($renderer, $noise_texture, SDL_Rect, SDL_Rect);
-    .say if SDL_GetError();
     SDL_RenderPresent($renderer);
-    .say if SDL_GetError();
 }
 
 my $event = SDL_Event.new;

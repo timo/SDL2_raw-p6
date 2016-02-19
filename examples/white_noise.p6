@@ -1,7 +1,7 @@
 use NativeCall;
 use SDL2::Raw;
 
-my ($w, $h) = 320, 240;
+my int ($w, $h) = 320, 240;
 my SDL_Window $window;
 my SDL_Renderer $renderer;
 

@@ -47,13 +47,13 @@ sub update (num \df) {
         my int $willdraw = 0;
         if (nqp::atpos_n(@lifetimes, $idx) <= 0e0) {
             if (True) {
-                nqp::bindpos_n(@lifetimes,  $idx, rand * 10e0);
+                nqp::bindpos_n(@lifetimes,  $idx, nqp::mul_n(rand, 10e0));
                 nqp::bindpos_n(@positions,  $xidx, $spawnx);
                 nqp::bindpos_n(@positions,  $yidx, $spawny);
                 #nqp::bindpos_n(@velocities, $xidx, (rand - 0.5e0) * 10e0);
                 #nqp::bindpos_n(@velocities, $yidx, (rand - 2e0) * 10e0);
-                nqp::bindpos_n(@velocities, $xidx, sin(rand * 2e0 * pi) * (rand) * 10e0);
-                nqp::bindpos_n(@velocities, $yidx, cos(rand * 2e0 * pi) * (rand) * 10e0 - 18e0);
+                nqp::bindpos_n(@velocities, $xidx, nqp::mul_n(sin(nqp::mul_n(rand, tau)), nqp::mul_n(rand, 10e0)));
+                nqp::bindpos_n(@velocities, $yidx, nqp::mul_n(cos(nqp::mul_n(rand, tau)), nqp::mul_n(rand, 10e0)) - 18e0);
                 $willdraw = 1;
             }
         } else {
@@ -61,17 +61,17 @@ sub update (num \df) {
                 nqp::bindpos_n(@velocities, $yidx, nqp::atpos_n(@velocities, $yidx) * -0.6e0);
             }
 
-            nqp::bindpos_n(@velocities, $yidx, nqp::atpos_n(@velocities, $yidx) + $gravitydiff);
-            nqp::bindpos_n(@positions, $xidx,  nqp::atpos_n(@positions, $xidx) + nqp::atpos_n(@velocities, $xidx) * df);
-            nqp::bindpos_n(@positions, $yidx,  nqp::atpos_n(@positions, $yidx) + nqp::atpos_n(@velocities, $yidx) * df);
+            nqp::bindpos_n(@velocities, $yidx, nqp::add_n(nqp::atpos_n(@velocities, $yidx), $gravitydiff));
+            nqp::bindpos_n(@positions, $xidx,  nqp::add_n(nqp::atpos_n(@positions, $xidx), nqp::mul_n(nqp::atpos_n(@velocities, $xidx), df)));
+            nqp::bindpos_n(@positions, $yidx,  nqp::add_n(nqp::atpos_n(@positions, $yidx), nqp::mul_n(nqp::atpos_n(@velocities, $yidx), df)));
 
-            nqp::bindpos_n(@lifetimes, $idx, nqp::atpos_n(@lifetimes, $idx) - df);
+            nqp::bindpos_n(@lifetimes, $idx, nqp::sub_n(nqp::atpos_n(@lifetimes, $idx), df));
             $willdraw = 1;
         }
 
         if ($willdraw) {
-            $points.ASSIGN-POS($pointidx = $pointidx + 1, (nqp::atpos_n(@positions, $xidx) * 10e0).Int);
-            $points.ASSIGN-POS($pointidx = $pointidx + 1, (nqp::atpos_n(@positions, $yidx) * 10e0).Int);
+            $points.ASSIGN-POS($pointidx = $pointidx + 1, nqp::mul_n(nqp::atpos_n(@positions, $xidx), 10e0).Int);
+            $points.ASSIGN-POS($pointidx = $pointidx + 1, nqp::mul_n(nqp::atpos_n(@positions, $yidx), 10e0).Int);
         }
 
         $xidx = $xidx + 2;
@@ -125,6 +125,7 @@ main: loop {
     $df = nqp::time_n() - $start;
 }
 
+'raw_timings_unsorted.txt'.IO.spurt((1 X/ @times).join("\n"));
 @times .= sort;
 
 my @timings = (@times[* div 50], @times[* div 4], @times[* div 2], @times[* * 3 div 4], @times[* - * div 100]);

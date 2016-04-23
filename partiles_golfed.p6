@@ -6,7 +6,7 @@ my int ($w, $h) = 800, 600;
 my SDL_Window $window;
 my SDL_Renderer $renderer;
 
-my int $particlenum = 1000;
+my int $particlenum = 500;
 
 constant $sdl-lib = 'SDL2';
 
@@ -34,42 +34,47 @@ my num @velocities = 0e0 xx ($particlenum * 2);
 my num @lifetimes = 0e0 xx $particlenum;
 
 my CArray[int32] $points .= new;
-my CArray[int8] $alphas .= new;
 my int $numpoints;
 
 sub update (num \df) {
     my int $xidx = 0;
     my int $yidx = 1;
     my int $pointidx = 0;
-    my int $alphaidx = 0;
     loop (my int $idx = 0; $idx < $particlenum; $idx = $idx + 1) {
         my int $willdraw = 0;
         if (@lifetimes[$idx] <= 0e0) {
             if (rand < df) {
-                @lifetimes[$idx] = rand * 10e0;
-                @positions[$xidx] = $w / 20e0;
-                @positions[$yidx] = 3e0 * $h / 50e0;
-                @velocities[$xidx] = (rand - 0.5e0) * 10e0;
-                @velocities[$yidx] = (rand - 2e0) * 10e0;
+                @lifetimes[$idx] = rand * 200e0;
+                @positions[$xidx] = ($w / 20e0).Num;
+                @positions[$yidx] = (3 * $h / 50).Num;
+                @velocities[$xidx] = (rand - 0.5e0) * 20;
+                @velocities[$yidx] = (rand - 1.5e0) * 12;
                 $willdraw = 1;
             }
         } else {
-            if @positions[$yidx] > $h / 10e0 && @velocities[$yidx] > 0e0 {
-                @velocities[$yidx] *= -0.6e0;
+            if @positions[$yidx] > $h / 10 && @velocities[$yidx] > 0 {
+                @velocities[$yidx] = @velocities[$yidx] * -1.1; # -0.6e0;
+            } elsif @positions[$yidx] < 0 && @velocities[$yidx] < 0 {
+                @velocities[$yidx] = @velocities[$yidx] * -0.9; # -0.6e0;
+                #@velocities[$xidx] = @velocities[$xidx] * -0.1; # -0.6e0;
+            }
+            if @positions[$xidx] > $w / 10 && @velocities[$xidx] > 0 {
+                @velocities[$xidx] = @velocities[$xidx] * -1; # -0.6e0;
+            } elsif @positions[$xidx] < 0 && @velocities[$xidx] < 0 {
+                @velocities[$xidx] = @velocities[$xidx] * -1; # -0.6e0;
             }
 
-            @velocities[$yidx] += 9.81e0 * df;
-            @positions[$xidx]  += @velocities[$xidx] * df;
-            @positions[$yidx]  += @velocities[$yidx] * df;
+            #@velocities[$yidx] = @velocities[$yidx] + 9.81e0 * df;
+            @positions[$xidx] = @positions[$xidx] + @velocities[$xidx] * df;
+            @positions[$yidx] = @positions[$yidx] + @velocities[$yidx] * df;
 
-            @lifetimes[$idx] -= df;
+            @lifetimes[$idx] = @lifetimes[$idx] - df;
             $willdraw = 1;
         }
 
         if ($willdraw) {
-            $points[$pointidx++] = (@positions[$xidx] * 10e0).floor;
-            $points[$pointidx++] = (@positions[$yidx] * 10e0).floor;
-            $alphas[$alphaidx++] = (@lifetimes[$idx] * 64).ceiling min 255;
+            $points[$pointidx++] = (@positions[$xidx] * 10).floor;
+            $points[$pointidx++] = (@positions[$yidx] * 10).floor;
         }
 
         $xidx = $xidx + 2;
@@ -82,12 +87,6 @@ sub render {
     SDL_SetRenderDrawColor($renderer, 0x0, 0x0, 0x0, 0xff);
     SDL_RenderClear($renderer);
 
-    #my int $lastidx = $numpoints * 2;
-    #loop (my int $idx = 0; $idx < $lastidx; $idx = $idx + 2) {
-        #my int $color = $alphas[$idx div 2];
-        #SDL_SetRenderDrawColor($renderer, $color, $color, $color, 0xff);
-        #SDL_RenderDrawPoint($renderer, $points[$idx], $points[$idx + 1]);
-    #}
     SDL_SetRenderDrawColor($renderer, 0xff, 0xff, 0xff, 0x7f);
     SDL_RenderDrawPoints($renderer, $points, $numpoints);
 

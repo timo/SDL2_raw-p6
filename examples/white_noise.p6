@@ -51,6 +51,8 @@ sub render {
     loop (my int $row; $row < $h; $row = $row + 1) {
         loop (my int $col; $col < $w; $col = $col + 1) {
             $pixdata[$cursor + $col] = Bool.roll ?? 0xff !! 0x0;
+            #nqp::bindpos_i(nqp::decont($pixdata), $cursor + $col, Bool.roll ?? 0xff !! 0x0);
+            #nqp::bindpos_i(nqp::decont($pixdata), $cursor + $col, nqp::rand_n(1e0) < 0.5e0 ?? 0x00 !! 0xff);
         }
         $cursor = $cursor + $pitch;
     }
@@ -92,3 +94,5 @@ say (1 X/ @timings).fmt("%3.4f");
 say "timings:";
 say (     @timings).fmt("%3.4f");
 say "";
+
+'raw_timings.txt'.IO.spurt((1 X/ @times).join("\n"));

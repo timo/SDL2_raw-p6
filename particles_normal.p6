@@ -42,6 +42,7 @@ sub update (num \df) {
     my int $xidx = 0;
     my int $yidx = 1;
     my int $pointidx = -1;
+    my num $gravitydiff = 9.81e0 * df;
     loop (my int $idx = 0; $idx < $particlenum; $idx = $idx + 1) {
         my int $willdraw = 0;
         if (nqp::atpos_n(@lifetimes, $idx) <= 0e0) {
@@ -60,7 +61,7 @@ sub update (num \df) {
                 nqp::bindpos_n(@velocities, $yidx, nqp::atpos_n(@velocities, $yidx) * -0.6e0);
             }
 
-            nqp::bindpos_n(@velocities, $yidx, nqp::atpos_n(@velocities, $yidx) + 9.81e0 * df);
+            nqp::bindpos_n(@velocities, $yidx, nqp::atpos_n(@velocities, $yidx) + $gravitydiff);
             nqp::bindpos_n(@positions, $xidx,  nqp::atpos_n(@positions, $xidx) + nqp::atpos_n(@velocities, $xidx) * df);
             nqp::bindpos_n(@positions, $yidx,  nqp::atpos_n(@positions, $yidx) + nqp::atpos_n(@velocities, $yidx) * df);
 

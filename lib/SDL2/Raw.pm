@@ -265,7 +265,7 @@ sub SDL_GetDisplayName(int32 $index) returns Str is native($lib) is export {*}
 sub SDL_GetDisplayBounds(int32 $index, SDL_Rect $rect) returns int32 is native($lib) is export {*}
 
 sub SDL_CreateWindow(Str $title, int32 $x, int32 $y, int32 $w, int32 $h, int32 $flags) returns SDL_Window is native($lib) is export {*}
-sub SDL_SetWindowTitle(SDL_Window $window, Str $title) returns Str is native($lib) is export {*}
+sub SDL_SetWindowTitle(SDL_Window $window, Str $title) is native($lib) is export {*}
 sub SDL_GetWindowTitle(SDL_Window $window) returns Str is native($lib) is export {*}
 
 sub SDL_UpdateWindowSurface(SDL_Window $window) returns int32 is native($lib) is export {*}

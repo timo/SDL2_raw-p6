@@ -54,7 +54,7 @@ enum SDL_INIT (
     :NOPARACHUTE(0x100000)
 );
 
-sub SDL_Init(int32 $flags) is native($lib) is export {*}
+sub SDL_Init(int32 $flags) is native($lib) is export returns int32 {*}
 sub SDL_Quit() is native($lib) is export {*}
 
 class SDL_Window is repr('CPointer') { }

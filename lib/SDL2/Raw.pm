@@ -139,6 +139,8 @@ class SDL_Texture is repr('CPointer') { }
 
 class SDL_Surface is repr('CPointer') { }
 
+class SDL_GLContext is repr('CPointer') { }
+
 sub SDL_GetNumRenderDrivers()
         returns int32
         is native($lib)

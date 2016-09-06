@@ -151,6 +151,10 @@ sub SDL_GetRenderDriverInfo(int32 $index, SDL_RendererInfo $info)
         is export
         {*}
 
+sub SDL_GetNumVideoDisplays() returns int32 is native($lib) is export {*}
+sub SDL_GetDisplayName(int32 $index) returns Str is native($lib) is export {*}
+sub SDL_GetDisplayBounds(int32 $index, SDL_Rect $rect) returns int32 is native($lib) is export {*}
+
 sub SDL_CreateWindowAndRenderer(int32 $width, int32 $height,
                                 int32 $flags,
                                 Pointer[SDL_Window] $win, Pointer[SDL_Renderer] $renderer)

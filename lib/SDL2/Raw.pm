@@ -137,6 +137,8 @@ class SDL_Renderer is repr('CPointer') { }
 
 class SDL_Texture is repr('CPointer') { }
 
+class SDL_Surface is repr('CPointer') { }
+
 sub SDL_GetNumRenderDrivers()
         returns int32
         is native($lib)
@@ -210,6 +212,12 @@ sub SDL_GetTextureBlendMode(SDL_Texture $tex, Pointer[int32] $blendmode)
         is export
         {*}
 
+sub SDL_CreateTextureFromSurface(SDL_Renderer $renderer, SDL_Surface $surface )
+        returns SDL_Texture
+        is native($lib)
+        is export
+        {*}
+
 sub SDL_RenderSetLogicalSize(SDL_Renderer $renderer, int32 $w, int32 $h)
         returns int32
         is native($lib)
@@ -274,6 +282,8 @@ sub SDL_UpdateWindowSurface(SDL_Window $window) returns int32 is native($lib) is
 sub SDL_SetWindowGrab(SDL_Window $window, int32 $grabbed) is native($lib) is export {*}
 sub SDL_GetWindowGrab(SDL_Window $window) returns int32 is native($lib) is export {*}
 
+sub SDL_LoadBMP(Str $path) returns SDL_Surface is native($lib) is export {*}
+sub SDL_SaveBMP(SDL_Surface $surf, Str $file) returns int32 is native($lib) is export {*}
 
 enum SDL_EventType (
    FIRSTEVENT     => 0,

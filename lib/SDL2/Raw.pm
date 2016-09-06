@@ -439,6 +439,8 @@ sub SDL_CastEvent(SDL_Event $event) is export {
     }
 }
 
+sub SDL_GetKeyboardState(int32 $numkeys is rw) returns CArray[uint8] is native($lib) is export {*}
+
 our constant SDL_QUERY   = -1;
 our constant SDL_IGNORE  =  0;
 our constant SDL_DISABLE =  0;

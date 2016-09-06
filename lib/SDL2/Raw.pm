@@ -137,6 +137,10 @@ class SDL_Renderer is repr('CPointer') { }
 
 class SDL_Texture is repr('CPointer') { }
 
+class SDL_Surface is repr('CPointer') { }
+
+class SDL_RWops is repr('CPointer') { }
+
 sub SDL_GetNumRenderDrivers()
         returns int32
         is native($lib)
@@ -170,6 +174,12 @@ sub SDL_GetRendererInfo(SDL_Renderer $renderer, SDL_RendererInfo $info)
         {*}
 
 sub SDL_CreateTexture(SDL_Renderer $renderer, int32 $format, int32 $access, int32 $w, int32 $h)
+        returns SDL_Texture
+        is native($lib)
+        is export
+        {*}
+
+sub SDL_CreateTextureFromSurface(SDL_Renderer $renderer, SDL_Surface $surface )
         returns SDL_Texture
         is native($lib)
         is export
@@ -273,6 +283,24 @@ sub SDL_UpdateWindowSurface(SDL_Window $window) returns int32 is native($lib) is
 sub SDL_SetWindowGrab(SDL_Window $window, int32 $grabbed) is native($lib) is export {*}
 sub SDL_GetWindowGrab(SDL_Window $window) returns int32 is native($lib) is export {*}
 
+sub SDL_LoadBMP_RW( SDL_RWops $src, int32 $freesrc )
+    returns SDL_Surface
+    is native($lib)
+    is export
+    {*}
+
+sub SDL_RWFromFile( Str $path, Str $mode )
+    returns SDL_RWops
+    is native($lib)
+    is export
+    {*}
+
+sub SDL_LoadBMP( Str $path )
+    returns SDL_Surface
+    is export
+{
+    return SDL_LoadBMP_RW( SDL_RWFromFile( $path, "rb" ), 1 );
+}
 
 enum SDL_EventType (
    FIRSTEVENT     => 0,

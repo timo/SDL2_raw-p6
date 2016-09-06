@@ -151,10 +151,6 @@ sub SDL_GetRenderDriverInfo(int32 $index, SDL_RendererInfo $info)
         is export
         {*}
 
-sub SDL_GetNumVideoDisplays() returns int32 is native($lib) is export {*}
-sub SDL_GetDisplayName(int32 $index) returns Str is native($lib) is export {*}
-sub SDL_GetDisplayBounds(int32 $index, SDL_Rect $rect) returns int32 is native($lib) is export {*}
-
 sub SDL_CreateWindowAndRenderer(int32 $width, int32 $height,
                                 int32 $flags,
                                 Pointer[SDL_Window] $win, Pointer[SDL_Renderer] $renderer)
@@ -261,9 +257,6 @@ sub SDL_RenderFillRect(SDL_Renderer $renderer, SDL_Rect $rect) returns int32 is 
 
 sub SDL_DestroyTexture(SDL_Texture $texture) is native($lib) is export {*}
 sub SDL_DestroyRenderer(SDL_Renderer $renderer) is native($lib) is export {*}
-
-sub SDL_GL_BindTexture(SDL_Texture $texture, Pointer[num32] $texw, Pointer[num32] $texh) returns int32 is native($lib) is export {*}
-sub SDL_GL_UnBindTexture(SDL_Texture $texture) returns int32 is native($lib) is export {*}
 
 sub SDL_VideoInit(Str $drivername) returns int32 is native($lib) is export {*}
 sub SDL_VideoQuit() is native($lib) is export {*}

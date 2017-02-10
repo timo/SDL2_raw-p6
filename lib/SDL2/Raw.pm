@@ -249,6 +249,7 @@ sub SDL_GetRenderDrawColor(SDL_Renderer $renderer, Pointer[uint8] $r, Pointer[ui
 
 sub SDL_SetRenderDrawBlendMode(SDL_Renderer $renderer, int32 $blendmode)
         is native($lib)
+        returns int32
         is export
         {*}
 

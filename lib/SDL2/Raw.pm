@@ -133,6 +133,13 @@ enum SDL_RendererFlip <
     VERTICAL
 >;
 
+enum SDL_BlendMode <
+    BLENDMODE_NONE
+    BLENDMODE_BLEND
+    BLENDMODE_ADD
+    BLENDMODE_MOD
+>;
+
 class SDL_Renderer is repr('CPointer') { }
 
 class SDL_Texture is repr('CPointer') { }

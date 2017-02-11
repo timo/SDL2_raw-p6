@@ -4,7 +4,7 @@ A low-sugar binding to SDL2.
 
 ## Synopsis
 
-```
+```perl6
 use SDL2::Raw;
 
 die "couldn't initialize SDL2: { SDL_GetError }" if SDL_Init(VIDEO) != 0;

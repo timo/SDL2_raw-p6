@@ -222,7 +222,7 @@ main: loop {
         if $_.pos.re > W - 15 && $_.vel.re > 0 {
             $_.vel = -$_.vel.re + $_.vel.im\i
         }
-        if !defined $_.lifetime {
+        unless defined $_.lifetime {
             if $_.vel.im < 182 && ($_.id > 128 || $_.pos.im < H / 4) {
                 $_.vel += ($dt * 100)\i;
                 my $polarvel = $_.vel.polar;
@@ -242,7 +242,7 @@ main: loop {
             $_.lifetime -= $dt;
             $_.vel *= 0.8;
         } else {
-            if !defined $player.lifetime {
+            unless defined $player.lifetime {
                 for @bullets -> $b {
                     next unless -20 < $b.pos.re - $_.pos.re < 20;
                     next unless -20 < $b.pos.im - $_.pos.im < 20;

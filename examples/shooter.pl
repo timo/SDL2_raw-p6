@@ -32,16 +32,14 @@ for ^SDL_GetNumRenderDrivers() {
 
 my $window = SDL_CreateWindow("Space Shooter!",
         SDL_WINDOWPOS_CENTERED_MASK, SDL_WINDOWPOS_CENTERED_MASK,
-        1280, 960,
+        W, H,
         OPENGL);
 my $render = SDL_CreateRenderer($window, -1, ACCELERATED +| PRESENTVSYNC);
 
 #SDL_RenderSetLogicalSize($render, 800, 600);
 
 my @starfields = do for ^4 {
-    my $texture = SDL_CreateTexture($render, %PIXELFORMAT<ARGB8888>, TARGET, 1200, 1920);
-
-    $texture;
+    my $texture = SDL_CreateTexture($render, %PIXELFORMAT<ARGB8888>, TARGET, W, H * 2);
 
     SDL_SetRenderTarget($render, $texture);
     SDL_SetRenderDrawColor($render, 0, 0, 0, 0);
@@ -49,9 +47,9 @@ my @starfields = do for ^4 {
     SDL_SetRenderDrawColor($render, 255, 255, 255, (255 * (1 - $_ * 0.2)).Int);
 
     for ^250 {
-        my ($x, $y) = 1200.rand.Int, 960.rand.Int;
+        my ($x, $y) = ^W .pick, ^H .pick;
         SDL_RenderDrawPoint($render, $x, $y);
-        SDL_RenderDrawPoint($render, $x, $y + 960);
+        SDL_RenderDrawPoint($render, $x, $y + H);
     }
 
     SDL_SetTextureBlendMode($texture, 1);
@@ -301,15 +299,16 @@ main: loop {
     SDL_SetRenderDrawColor($render, 0, 0, 0, 0);
     SDL_RenderClear($render);
 
-    my @yoffs  = ((nqp::time_n() * -100) % 960).Int,
-                 ((nqp::time_n() *  -80) % 960).Int,
-                 ((nqp::time_n() *  -50) % 960).Int,
-                 ((nqp::time_n() *  -15) % 960).Int;
+    my @yoffs  = ((nqp::time_n() * -100) % H).Int,
+                 ((nqp::time_n() *  -80) % H).Int,
+                 ((nqp::time_n() *  -50) % H).Int,
+                 ((nqp::time_n() *  -15) % H).Int;
 
     SDL_SetRenderDrawColor($render, 255, 255, 255, 255);
+    my SDL_Rect $srcrect .= new: x => 0, y => 0, w => W, h => H;
     for ^4 {
-        my SDL_Rect $src .= new: x => 0, y => @yoffs.AT-POS($_).Int, w => 1200, h => 960;
-        SDL_RenderCopy($render, @starfields.AT-POS($_), $src, SDL_Rect);
+        $srcrect.y = @yoffs.AT-POS($_).Int;
+        SDL_RenderCopy($render, @starfields.AT-POS($_), $srcrect, SDL_Rect);
     }
 
     SDL_RenderCopy($render, $player_texture, SDL_Rect, SDL_Rect.new($player.pos.re - 32, $player.pos.im - 32, 64, 64));

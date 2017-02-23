@@ -12,7 +12,7 @@ constant ENEMY_PROB = 5;
 class Object is rw {
     has Complex $.pos;
     has Complex $.vel;
-    has Int $.id = (4096.rand).Int;
+    has Int $.id = ^4096 .pick;
     has Num $.lifetime;
 }
 

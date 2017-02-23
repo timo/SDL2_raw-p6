@@ -139,7 +139,6 @@ SDL_SetRenderDrawBlendMode($render, 1);
 
 my @times;
 
-my num $start = nqp::time_n();
 my $event = SDL_Event.new;
 
 enum GAME_KEYS (

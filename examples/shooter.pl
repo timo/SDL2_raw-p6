@@ -36,7 +36,7 @@ my $window = SDL_CreateWindow("Space Shooter!",
         OPENGL);
 my $render = SDL_CreateRenderer($window, -1, ACCELERATED +| PRESENTVSYNC);
 
-#SDL_RenderSetLogicalSize($render, 800, 600);
+SDL_RenderSetLogicalSize($render, 1920, 960);
 
 my @starfields = do for ^4 {
     my $texture = SDL_CreateTexture($render, %PIXELFORMAT<ARGB8888>, TARGET, W, H * 2);

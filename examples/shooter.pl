@@ -154,6 +154,7 @@ my %down_keys;
 
 my @bullets;
 my @enemies;
+my @enemies_freelist;
 my @shieldbounces;
 my @kills;
 my $nextreload = 0;
@@ -286,14 +287,25 @@ main: loop {
             }
         }
     }
+    @enemies_freelist.append: @enemies.grep({ not ($_.pos.im < H + 30 && (!.lifetime || .lifetime > 0)) });
     @enemies .= grep({ $_.pos.im < H + 30 && (!$_.lifetime || $_.lifetime > 0) });
     @shieldbounces.shift while @shieldbounces and @shieldbounces[0].lifetime <= 0;
 
     if 100.rand < ENEMY_PROB && @enemies < 100 {
-        @enemies.push: Enemy.new:
-            :pos((W - 24).rand + 12 - 15i),
-            :vel((100.rand - 50) + 182i),
-            :HP(3);
+        if @enemies_freelist {
+            my $enemy = @enemies_freelist.pop;
+            $enemy.pos = (W - 24).rand + 12 - 15i;
+            $enemy.vel = (100.rand - 50) + 182i;
+            $enemy.HP = 3;
+            $enemy.lifetime = Num;
+            $enemy.id = ^4096 .pick;
+            @enemies.push($enemy);
+        } else {
+            @enemies.push: Enemy.new:
+                :pos((W - 24).rand + 12 - 15i),
+                :vel((100.rand - 50) + 182i),
+                :HP(3);
+        }
     }
 
     SDL_SetRenderDrawColor($render, 0, 0, 0, 0);

@@ -322,16 +322,25 @@ main: loop {
         SDL_RenderCopy($render, @starfields.AT-POS($_), $srcrect, SDL_Rect);
     }
 
-    SDL_RenderCopy($render, $player_texture, SDL_Rect, SDL_Rect.new($player.pos.re - 32, $player.pos.im - 32, 64, 64));
+    $srcrect.x = ($player.pos.re - 32).Int;
+    $srcrect.y = ($player.pos.im - 32).Int;
+    $srcrect.w = 64;
+    $srcrect.h = 64;
+    SDL_RenderCopy($render, $player_texture, SDL_Rect, $srcrect);
 
     for @enemies {
-        SDL_RenderCopy($render, $enemy_texture, SDL_Rect, SDL_Rect.new(.pos.re - 32, .pos.im - 32, 64, 64));
+        $srcrect.x = (.pos.re - 32).Int;
+        $srcrect.y = (.pos.im - 32).Int;
+        SDL_RenderCopy($render, $enemy_texture, SDL_Rect, $srcrect);
     }
 
     SDL_SetRenderDrawColor($render, 78, 78, 255, 255);
+    $srcrect.w = 6;
+    $srcrect.h = 16;
     for @bullets {
-        my $bulletrect = SDL_Rect.new: $_.pos.re - 3, $_.pos.im - 8, 6, 16;
-        SDL_RenderFillRect($render, $bulletrect);
+        $srcrect.x = (.pos.re - 3).Int;
+        $srcrect.y = (.pos.im - 8).Int;
+        SDL_RenderFillRect($render, $srcrect);
     }
 
     SDL_RenderPresent($render);

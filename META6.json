@@ -1,5 +1,6 @@
 {
     "name" : "SDL2::Raw",
+    "license" : "Artistic-2.0",
     "perl" : "6.*",
     "version" : "0.1",
     "description" : "Sugar-free NativeCall binding for libSDL2",

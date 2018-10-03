@@ -9,11 +9,11 @@
   "name" : "SDL2::Raw",
   "perl" : "6.*",
   "provides" : {
-    "SDL2::Raw" : "lib/SDL2/Raw.pm"
+    "SDL2::Raw" : "lib/SDL2/Raw.pm6"
   },
   "resources" : [ ],
   "source-url" : "git://github.com/timo/SDL2_Raw-p6.git",
   "tags" : [ ],
   "test-depends" : [ ],
-  "version" : "0.1"
+  "version" : "0.2"
 }

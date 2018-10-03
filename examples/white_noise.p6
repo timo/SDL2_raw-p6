@@ -6,10 +6,6 @@ my int ($w, $h) = 320, 240;
 my SDL_Window $window;
 my SDL_Renderer $renderer;
 
-constant $sdl-lib = 'SDL2';
-
-sub SDL_RenderDrawPoints( SDL_Renderer $, CArray[int32] $points, int32 $count ) returns int32 is native($sdl-lib) {*}
-
 SDL_Init(VIDEO);
 $window = SDL_CreateWindow(
     "some white noise",

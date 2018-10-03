@@ -8,10 +8,6 @@ my SDL_Renderer $renderer;
 
 my int $particlenum = 1000;
 
-constant $sdl-lib = 'SDL2';
-
-sub SDL_RenderDrawPoints( SDL_Renderer $, CArray[int32] $points, int32 $count ) returns int32 is native($sdl-lib) {*}
-
 SDL_Init(VIDEO);
 $window = SDL_CreateWindow(
     "Particle System!",
@@ -21,7 +17,7 @@ $window = SDL_CreateWindow(
 );
 $renderer = SDL_CreateRenderer( $window, -1, ACCELERATED );
 
-SDL_ClearError();
+SDL_ClearError;
 
 my SDL_RendererInfo $renderer_info .= new;
 SDL_GetRendererInfo($renderer, $renderer_info);
@@ -106,7 +102,7 @@ main: loop {
 
     update($df);
 
-    render();
+    render;
 
     @times.push: nqp::time_n() - $start;
     $df = nqp::time_n() - $start;

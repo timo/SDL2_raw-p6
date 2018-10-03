@@ -734,3 +734,6 @@ sub SDL_GL_MakeCurrent(SDL_Window $window, SDL_GLContext $context) returns int32
 
 sub SDL_GL_SetAttribute(int32 $attr, int32 $value) returns int32 is native($lib) is export {*}
 sub SDL_GL_SwapWindow(SDL_Window $window) is native($lib) is export {*}
+
+sub SDL_RenderDrawPoints( SDL_Renderer $, CArray[int32] $points, int32 $count )
+  returns int32 is native($lib) is export {*}

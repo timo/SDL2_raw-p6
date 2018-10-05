@@ -61,7 +61,7 @@ There's a bunch of functions and structs already covered, but there's also a who
 
 ### Snake
 
-![screenshots/snake_screenshot.png](screenshots/snake_screenshot.png)
+![screenshots/snake-screenshot.png](screenshots/snake-screenshot.png)
 
 A simple Snake game. Control it with the arrow keys, guide your snake to eat the red circles, and avoid running into your tail.
 
@@ -69,13 +69,13 @@ This code uses `Cairo` to create the images for the snake's body and tail.
 
 ### Particles
 
-![screenshots/particles_screenshot.png](screenshots/particles_screenshot.png)
+![screenshots/particles-screenshot.png](screenshots/particles-screenshot.png)
 
 A very simple particle system that spews white pixels from a central point that get pulled down by gravity and bounce on the floor.
 
 ### Shooter
 
-![screenshots/shooter_screenshot.png](screenshots/shooter_screenshot.png)
+![screenshots/shooter-screenshot.png](screenshots/shooter-screenshot.png)
 
 A more complicated game. Control it with the arrow keys and hold the spacebar to fire.
 
@@ -85,4 +85,4 @@ The code also uses `Cairo` to render the player's spaceship and the enemy spaces
 
 Just draws random white and black pixels to a texture and displays it.
 
-![screenshots/shooter_screenshot.png](screenshots/white_noise_screenshot.png)
+![screenshots/white-noise-screenshot.png](screenshots/white-noise-screenshot.png)

@@ -55,6 +55,7 @@ There's a bunch of functions and structs already covered, but there's also a who
 |Arch Linux|`pacman -S sdl2`|
 |Gentoo|`emerge -av libsdl2`|
 |macOS|`brew install sdl2 pkg-config`|
+|Windows|https://libsdl.org/download-2.0.php|
 
 ## Examples
 

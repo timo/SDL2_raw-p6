@@ -48,7 +48,7 @@ There's a bunch of functions and structs already covered, but there's also a who
 
 =head3 Snake
 
-L<screenshots/snake_screenshot.png>
+L<screenshots/snake-screenshot.png>
 
 A simple Snake game. Control it with the arrow keys, guide your snake to eat the red circles, and avoid running into your tail.
 
@@ -56,19 +56,21 @@ This code uses C<Cairo> to create the images for the snake's body and tail.
 
 =head3 Particles
 
-L<screenshots/particles_screenshot.png>
+L<screenshots/particles-screenshot.png>
 
 A very simple particle system that spews white pixels from a central point that get pulled down by gravity and bounce on the floor.
 
 =head3 Shooter
 
-L<screenshots/shooter_screenshot.png>
+L<screenshots/shooter-screenshot.png>
 
 A more complicated game. Control it with the arrow keys and hold the spacebar to fire.
 
 The code also uses C<Cairo> to render the player's spaceship and the enemy spaceships. In generating the starfields it shows how to render to a texture with C<SDL2>.
 
 =head3 White Noise
+
+L<screenshots/white-noise-screenshot.png>
 
 Just draws random white and black pixels to a texture and displays it.
 

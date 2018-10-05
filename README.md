@@ -84,3 +84,5 @@ The code also uses `Cairo` to render the player's spaceship and the enemy spaces
 ### White Noise
 
 Just draws random white and black pixels to a texture and displays it.
+
+![screenshots/shooter_screenshot.png](screenshots/white_noise_screenshot.png)

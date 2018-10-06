@@ -1,5 +1,7 @@
 # SDL2::Raw
 
+ [![Build Status](https://travis-ci.org/timo/SDL2_raw-p6.svg?branch=master)](https://travis-ci.org/timo/SDL2_raw-p6) [![Build status](https://ci.appveyor.com/api/projects/status/github/timo/SDL2_raw-p6?svg=true)](https://ci.appveyor.com/project/timo/SDL2_raw-p6/branch/master)
+
 A low-sugar binding to SDL2.
 
 ## Synopsis

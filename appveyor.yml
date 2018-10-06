@@ -8,16 +8,22 @@ environment:
         - test_moar: ''
 
 install:
+  # Install rakudostar for faster CI builds. No windows user will actually use
+  # rakudobrew
   - choco install rakudostar
-  - SET SDL2_ARCHIVE=SDL2-2.0.8-win32-x64.zip
+  # Change to build folder
   - cd %APPVEYOR_BUILD_FOLDER%
+  # Download and unzip SDL2 Zip archive
+  - SET SDL2_ARCHIVE=SDL2-2.0.8-win32-x64.zip
   - appveyor DownloadFile https://libsdl.org/release/%SDL2_ARCHIVE%
   - 7z x %SDL2_ARCHIVE%
-  - zef install SDL2::Raw --verbose
+  # Refresh environment variables so zef works
+  - refreshenv
 
 build: off
 
 test_script:
-  - prove -v -e "perl6 -Ilib" t/
+  # Test for fun :)
+  - zef install . --verbose
 
 shallow_clone: true

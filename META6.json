@@ -13,7 +13,13 @@
   },
   "resources" : [ ],
   "source-url" : "git://github.com/timo/SDL2_Raw-p6.git",
-  "tags" : [ ],
+  "tags" : [
+    "input",
+    "windowing",
+    "graphics",
+    "media",
+    "sdl"
+  ],
   "test-depends" : [ ],
   "version" : "0.2"
 }

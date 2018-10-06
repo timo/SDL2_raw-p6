@@ -169,7 +169,7 @@ main: loop {
     sleep(1 / 50);
 }
 
-SDL_Quit();
+SDL_Quit;
 
 @times .= sort;
 

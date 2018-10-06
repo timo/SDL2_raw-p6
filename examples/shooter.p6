@@ -77,9 +77,9 @@ my $enemy_image = Cairo::Image.record(
         .line_to(0, 5) :relative;
 
         .rgb(0.9, 0.2, 0.1);
-        .fill() :preserve;
+        .fill :preserve;
         .rgb(1, 1, 1);
-        .stroke();
+        .stroke;
     }, 128, 128, Cairo::FORMAT_ARGB32);
 
 
@@ -96,7 +96,7 @@ my $player_image = Cairo::Image.record(
             .line_to(0, -8) :relative;
             .line_to(2, 0) :relative;
             .line_to(0, 8) :relative;
-            .close_path();
+            .close_path;
 
             .move_to(5, -30);
             for ( -10, 0,  -5, 5,  -5, 20,  5, 5,  -10, 10,  -15, -5,
@@ -104,13 +104,13 @@ my $player_image = Cairo::Image.record(
                   0, -35,  -2, 0,  0, 20,  -15, 5,  -10, -10,  5, -5,  -5, -20) -> $x, $y {
                 .line_to($x, $y) :relative;
             }
-            .close_path();
+            .close_path;
             #$playerpath = .copy_path();
         #});
 
-        .stroke() :preserve;
+        .stroke :preserve;
         .rgb(0.75, 0.75, 0.75);
-        .fill();
+        .fill;
 
         .rgb(0.5, 0.5, 0.5);
 
@@ -120,11 +120,11 @@ my $player_image = Cairo::Image.record(
         .line_to(3, -10) :relative;
         .line_to(9, 0) :relative;
         .line_to(3, 10) :relative;
-        .close_path();
+        .close_path;
 
-        .stroke() :preserve;
+        .stroke :preserve;
         .rgb(0.2, 0.2, 0.2);
-        .fill();
+        .fill;
     }, 128, 128, Cairo::FORMAT_ARGB32);
 
 my $enemy_texture = SDL_CreateTexture($render, %PIXELFORMAT<ARGB8888>, STATIC, 128, 128);

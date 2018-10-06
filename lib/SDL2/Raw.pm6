@@ -1,3 +1,5 @@
+unit module SDL2::Raw:ver<0.0.2>;
+
 =begin pod
 
 =head1 SDL2::Raw
@@ -87,7 +89,7 @@ BEGIN {
     }
 }
 
-class SDL_Point is repr('CStruct') is rw {
+class SDL_Point is export is repr('CStruct') is rw {
     # positional
     multi method new(Real $x, Real $y) { self.bless(:$x.Int, :$y.Int) }
     multi method new(Complex $complex) { self.bless(:x($complex.re), :y($complex.im)) }
@@ -99,7 +101,7 @@ class SDL_Point is repr('CStruct') is rw {
     has int32 $.y;
 }
 
-class SDL_Rect is repr('CStruct') is rw {
+class SDL_Rect is export is repr('CStruct') is rw {
     # positional
     multi method new(int $x, int $y, int $w, int $h) { self.bless(:$x, :$y, :$w, :$h) }
     multi method new(Int(Real) $x, Int(Real) $y, Int(Real) $w, Int(Real) $h) { self.bless(:$x, :$y, :$w, :$h) }
@@ -113,7 +115,7 @@ class SDL_Rect is repr('CStruct') is rw {
     has int32 $.w;
     has int32 $.h;
 }
-class SDL_DisplayMode is repr('CStruct') is rw {
+class SDL_DisplayMode is export is repr('CStruct') is rw {
     has uint32   $.format;
     has int32    $.w;
     has int32    $.h;
@@ -121,7 +123,7 @@ class SDL_DisplayMode is repr('CStruct') is rw {
     has Pointer  $.driverdata;
 }
 
-enum SDL_INIT (
+enum SDL_INIT is export (
     :TIMER(0x1),
     :AUDIO(0x10),
     :VIDEO(0x20),
@@ -135,9 +137,9 @@ enum SDL_INIT (
 sub SDL_Init(int32 $flags) is native($lib) is export returns int32 {*}
 sub SDL_Quit() is native($lib) is export {*}
 
-class SDL_Window is repr('CPointer') { }
+class SDL_Window is export is repr('CPointer') { }
 
-enum SDL_WindowFlags (
+enum SDL_WindowFlags is export (
     :FULLSCREEN(0x00000001),
     :OPENGL(0x00000002),
     :SHOWN(0x00000004),
@@ -155,7 +157,7 @@ enum SDL_WindowFlags (
     :MOUSE_CAPTURE(0x00004000),
 );
 
-enum WindowEventID (
+enum WindowEventID is export (
     'WINDOW_EVENT_NONE',           # Never used
     'EVENT_SHOWN',          # Window has been shown
     'EVENT_HIDDEN',         # Window has been hidden
@@ -173,10 +175,10 @@ enum WindowEventID (
     'CLOSE',          # The window manager requests that the window be closed
 );
 
-our constant SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000;
-our constant SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000;
+our constant SDL_WINDOWPOS_UNDEFINED_MASK is export = 0x1FFF0000;
+our constant SDL_WINDOWPOS_CENTERED_MASK is export = 0x2FFF0000;
 
-class SDL_RendererInfo is repr('CStruct') is rw {
+class SDL_RendererInfo is export is repr('CStruct') is rw {
     has Str $.name;
     has int32 $.flags;
     has int32 $.num_texture_formats;
@@ -186,45 +188,45 @@ class SDL_RendererInfo is repr('CStruct') is rw {
     has int32 $.max_texture_height;
 }
 
-enum SDL_RendererFlags (
+enum SDL_RendererFlags is export (
     :SOFTWARE(1),
     :ACCELERATED(2),
     :PRESENTVSYNC(4),
     :TARGETTEXTURE(8),
 );
 
-enum SDL_TextureAccess <
+enum SDL_TextureAccess is export <
     STATIC
     STREAMING
     TARGET
 >;
 
-enum SDL_TextureModulate <
+enum SDL_TextureModulate is export <
     TEXTURE_MODULATE_NONE
     COLOR
     ALPHA
 >;
 
-enum SDL_RendererFlip <
+enum SDL_RendererFlip is export <
     RENDERER_FLIP_NONE
     HORIZONTAL
     VERTICAL
 >;
 
-enum SDL_BlendMode <
+enum SDL_BlendMode is export <
     BLENDMODE_NONE
     BLENDMODE_BLEND
     BLENDMODE_ADD
     BLENDMODE_MOD
 >;
 
-class SDL_Renderer is repr('CPointer') { }
+class SDL_Renderer is export is repr('CPointer') { }
 
-class SDL_Texture is repr('CPointer') { }
+class SDL_Texture is export is repr('CPointer') { }
 
-class SDL_Surface is repr('CPointer') { }
+class SDL_Surface is export is repr('CPointer') { }
 
-class SDL_GLContext is repr('CPointer') { }
+class SDL_GLContext is export is repr('CPointer') { }
 
 sub SDL_GetNumRenderDrivers()
         returns int32
@@ -370,7 +372,7 @@ sub SDL_GetWindowGrab(SDL_Window $window) returns int32 is native($lib) is expor
 sub SDL_LoadBMP(Str $path) returns SDL_Surface is native($lib) is export {*}
 sub SDL_SaveBMP(SDL_Surface $surf, Str $file) returns int32 is native($lib) is export {*}
 
-enum SDL_EventType (
+enum SDL_EventType is export (
    FIRSTEVENT     => 0,
 
    QUIT           => 0x100,
@@ -430,7 +432,7 @@ enum SDL_EventType (
    LASTEVENT    => 0xFFFF,
 );
 
-class SDL_Event is repr('CStruct') is rw {
+class SDL_Event is export is repr('CStruct') is rw {
     has uint32 $.type;
     has uint32 $.timestamp;
     has int64  $.dummy1;
@@ -441,7 +443,7 @@ class SDL_Event is repr('CStruct') is rw {
     has int64  $.dummy6;
 }
 
-class SDL_WindowEvent is repr('CStruct') is rw {
+class SDL_WindowEvent is export is repr('CStruct') is rw {
    has uint32 $.type;
    has uint32 $.timestamp;
    has uint32 $.windowID;
@@ -453,7 +455,7 @@ class SDL_WindowEvent is repr('CStruct') is rw {
    has int32  $.data2;
 }
 
-class SDL_KeyboardEvent is repr('CStruct') is rw {
+class SDL_KeyboardEvent is export is repr('CStruct') is rw {
    has uint32 $.type;
    has uint32 $.timestamp;
    has uint32 $.windowID;
@@ -464,7 +466,7 @@ class SDL_KeyboardEvent is repr('CStruct') is rw {
    has uint16  $.mod;
 }
 
-class SDL_MouseMotionEvent is repr('CStruct') is rw {
+class SDL_MouseMotionEvent is export is repr('CStruct') is rw {
     has uint32 $.type;
     has uint32 $.timestamp;
     has uint32 $.windowID;
@@ -476,7 +478,7 @@ class SDL_MouseMotionEvent is repr('CStruct') is rw {
     has int32  $.yrel;
 }
 
-class SDL_MouseButtonEvent is repr('CStruct') is rw {
+class SDL_MouseButtonEvent is export is repr('CStruct') is rw {
     has uint32 $.type;
     has uint32 $.timestamp;
     has uint32 $.windowID;
@@ -489,7 +491,7 @@ class SDL_MouseButtonEvent is repr('CStruct') is rw {
     has int32  $.y;
 }
 
-class SDL_MouseWheelEvent is repr('CStruct') is rw {
+class SDL_MouseWheelEvent is export is repr('CStruct') is rw {
     has uint32 $.type;
     has uint32 $.timestamp;
     has uint32 $.windowID;
@@ -544,7 +546,7 @@ my sub _pxfmt($type, $order, $layout, $bits, $bytes) {
     (1 +< 28) +| ($type +< 24) +| ($order +< 20) +| ($layout +< 16) +| ($bits +< 8) +| $bytes
 }
 
-enum SDL_Pixeltype <
+enum SDL_Pixeltype is export <
         PIXELTYPE_UNKNOWN
         PIXELTYPE_INDEX1
         PIXELTYPE_INDEX4
@@ -560,13 +562,13 @@ enum SDL_Pixeltype <
     >;
 
 
-enum SDL_BitmapOrder <
+enum SDL_BitmapOrder is export <
         BITMAPORDER_NONE
         BITMAPORDER_4321
         BITMAPORDER_1234
     >;
 
-enum SDL_PackedOrder <
+enum SDL_PackedOrder is export <
         PACKEDORDER_NONE
         PACKEDORDER_XRGB
         PACKEDORDER_RGBX
@@ -578,7 +580,7 @@ enum SDL_PackedOrder <
         PACKEDORDER_BGRA
     >;
 
-enum SDL_ArrayOrder <
+enum SDL_ArrayOrder is export <
         ARRAYORDER_NONE
         ARRAYORDER_RGB
         ARRAYORDER_RGBA
@@ -588,7 +590,7 @@ enum SDL_ArrayOrder <
         ARRAYORDER_ABGR
     >;
 
-enum SDL_PackedLayout <
+enum SDL_PackedLayout is export <
         PACKEDLAYOUT_NONE
         PACKEDLAYOUT_332
         PACKEDLAYOUT_4444
@@ -720,7 +722,7 @@ enum SDL_GLAttr is export <
     FRAMEBUFFER_SRGB_CAPABLE
 >;
 
-enum SDL_GLProfile (
+enum SDL_GLProfile is export (
     :CONTEXT_PROFILE_CORE(0x0001),
     :CONTEXT_PROFILE_COMPATIBILITY(0x0002),
     :CONTEXT_PROFILE_ES(0x0004)

@@ -1,0 +1,11 @@
+Revision history for SDL2-Raw
+
+{{$NEXT}}
+
+0.0.2  2018-10-06T12:24:43+02:00
+    - Introduce continuous integration
+    - Minor code cleanup
+    - Add SDL_RenderDrawPoints officially
+
+0.1
+    - Initial version

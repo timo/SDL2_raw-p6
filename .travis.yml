@@ -26,4 +26,4 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" == "osx"   ]; then brew install sdl2 pkg-config        ; fi
 
 install:
-  - zef install . && zef test .
+  - zef install . && zef test . --verbose

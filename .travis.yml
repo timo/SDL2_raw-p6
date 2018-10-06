@@ -20,11 +20,11 @@ before_install:
   - echo $TRAVIS_OS_NAME
 
   # Debian-based libsdl2 installation
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get -qq update             ; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get -qq update                  ; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install -y libegl1-mesa-dev libgles2-mesa-dev ; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install -y libsdl2-dev ; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx"   ]; then brew update                         ; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx"   ]; then brew install sdl2 pkg-config        ; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install -y libsdl2-dev      ; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx"   ]; then brew update                              ; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx"   ]; then brew install rakudo-star sdl2 pkg-config ; fi
 
 install:
   - zef install . && zef test . --verbose

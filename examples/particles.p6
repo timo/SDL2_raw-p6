@@ -48,7 +48,7 @@ sub update (num \df) {
                 $willdraw = 1;
             }
         } else {
-            if @positions[$yidx] > $h / 10 && @velocities[$yidx] > 0 {
+            if @positions[$yidx] > $h / 10e0 && @velocities[$yidx] > 0 {
                 @velocities[$yidx] = @velocities[$yidx] * -0.6e0;
             }
 

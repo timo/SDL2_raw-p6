@@ -15,7 +15,7 @@ $window = SDL_CreateWindow(
 );
 $renderer = SDL_CreateRenderer( $window, -1, ACCELERATED +| TARGETTEXTURE );
 
-SDL_ClearError();
+SDL_ClearError;
 
 my SDL_RendererInfo $renderer_info .= new;
 SDL_GetRendererInfo($renderer, $renderer_info);
@@ -74,7 +74,7 @@ main: loop {
         }
     }
 
-    render();
+    render;
 
     @times.push: nqp::time_n() - $start;
 }

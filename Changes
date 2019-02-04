@@ -2,6 +2,13 @@ Revision history for SDL2-Raw
 
 {{$NEXT}}
 
+0.3
+    - Bind more functions from SDL2
+    - SDL_GetTicks
+    - SDL_[Get|Set]Texture[Color|Alpha]Mod
+    - SDL_LogSet[All]?Priority
+    - SDL_Rect gets methods shift and shifted
+
 0.0.2  2018-10-06T12:24:43+02:00
     - Introduce continuous integration
     - Minor code cleanup

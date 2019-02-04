@@ -137,6 +137,8 @@ enum SDL_INIT is export (
 sub SDL_Init(int32 $flags) is native($lib) is export returns int32 {*}
 sub SDL_Quit() is native($lib) is export {*}
 
+sub term:<SDL_GetTicks> is native($lib) is symbol<SDL_GetTicks> is export returns uint32 {*}
+
 class SDL_Window is export is repr('CPointer') { }
 
 enum SDL_WindowFlags is export (

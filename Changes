@@ -2,7 +2,7 @@ Revision history for SDL2-Raw
 
 {{$NEXT}}
 
-0.3
+0.3  2019-02-04T02:37:20+01:00
     - Bind more functions from SDL2
     - SDL_GetTicks
     - SDL_[Get|Set]Texture[Color|Alpha]Mod

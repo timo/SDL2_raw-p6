@@ -285,7 +285,6 @@ sub SDL_LockTexture(SDL_Texture $tex, SDL_Rect $rect, Pointer[int64] $pixdata, i
         is native($lib)
         is export
         {*}
-
 sub SDL_UnlockTexture(SDL_Texture $tex)
         is native($lib)
         is export
@@ -296,7 +295,6 @@ sub SDL_SetTextureBlendMode(SDL_Texture $tex, int32 $blendmode)
         is native($lib)
         is export
         {*}
-
 sub SDL_GetTextureBlendMode(SDL_Texture $tex, Pointer[int32] $blendmode)
         returns int32
         is native($lib)

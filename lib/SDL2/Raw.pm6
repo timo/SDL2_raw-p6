@@ -110,6 +110,9 @@ class SDL_Rect is export is repr('CStruct') is rw {
     multi method new(int :$x!, int :$y!, int :$w!, int :$h!) { self.bless(:$x, :$y, :$w, :$h) }
     multi method new(Int(Real) :$x!, Int(Real) :$y!, Int(Real) :$w!, Int(Real) :$h!) { self.bless(:$x, :$y, :$w, :$h) }
 
+    multi method shifted(int $x, int $y) { self.bless(x => $!x + $x, y => $!y + $y, :$!w, :$!h) }
+    multi method shift(int $x, int $y) { $!x += $x; $!y += $y }
+
     has int32 $.x;
     has int32 $.y;
     has int32 $.w;

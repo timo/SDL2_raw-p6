@@ -567,6 +567,44 @@ sub SDL_GetError returns Str is native($lib) is export {*}
 
 sub SDL_ClearError is native($lib) is export {*}
 
+enum SDL_LogCategory is export <
+        SDL_LOG_CATEGORY_APPLICATION
+        SDL_LOG_CATEGORY_ERROR
+        SDL_LOG_CATEGORY_ASSERT
+        SDL_LOG_CATEGORY_SYSTEM
+        SDL_LOG_CATEGORY_AUDIO
+        SDL_LOG_CATEGORY_VIDEO
+        SDL_LOG_CATEGORY_RENDER
+        SDL_LOG_CATEGORY_INPUT
+        SDL_LOG_CATEGORY_TEST
+
+        SDL_LOG_CATEGORY_RESERVED1
+        SDL_LOG_CATEGORY_RESERVED2
+        SDL_LOG_CATEGORY_RESERVED3
+        SDL_LOG_CATEGORY_RESERVED4
+        SDL_LOG_CATEGORY_RESERVED5
+        SDL_LOG_CATEGORY_RESERVED6
+        SDL_LOG_CATEGORY_RESERVED7
+        SDL_LOG_CATEGORY_RESERVED8
+        SDL_LOG_CATEGORY_RESERVED9
+        SDL_LOG_CATEGORY_RESERVED10
+
+        SDL_LOG_CATEGORY_CUSTOM
+    >;
+
+enum SDL_LogPriority is export (
+       SDL_LOG_PRIORITY_VERBOSE => 1,
+       'SDL_LOG_PRIORITY_DEBUG',
+       'SDL_LOG_PRIORITY_INFO',
+       'SDL_LOG_PRIORITY_WARN',
+       'SDL_LOG_PRIORITY_ERROR',
+       'SDL_LOG_PRIORITY_CRITICAL',
+       'SDL_NUM_LOG_PRIORITIE',
+   );
+
+sub SDL_LogSetAllPriority(uint64 $priority) is native($lib) is export {*}
+
+sub SDL_LogSetPriority(int32 $category, uint64 $priority) is native($lib) is export {*}
 
 my sub _pxfmt($type, $order, $layout, $bits, $bytes) {
     (1 +< 28) +| ($type +< 24) +| ($order +< 20) +| ($layout +< 16) +| ($bits +< 8) +| $bytes

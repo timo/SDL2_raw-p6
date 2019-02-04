@@ -1,4 +1,4 @@
-unit module SDL2::Raw:ver<0.0.2>;
+unit module SDL2::Raw:ver<0.3>;
 
 =begin pod
 

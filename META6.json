@@ -18,7 +18,8 @@
     "windowing",
     "graphics",
     "media",
-    "sdl"
+    "sdl",
+    "interactive"
   ],
   "test-depends" : [ ],
   "version" : "0.0.2"

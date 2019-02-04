@@ -351,8 +351,6 @@ sub SDL_SetRenderDrawColor(SDL_Renderer $renderer, int8 $r, int8 $g, int8 $b, in
         is export
         {*}
 
-sub SDL_SetTextureColorMod(SDL_Texture $texture, int8 $r, int8 $g, int8 $b) returns int32 is native($lib) is export {*}
-
 sub SDL_GetRenderDrawColor(SDL_Renderer $renderer, Pointer[uint8] $r, Pointer[uint8] $g, Pointer[uint8] $b, Pointer[uint8] $a) returns int32 is native($lib) is export {*}
 
 sub SDL_SetRenderDrawBlendMode(SDL_Renderer $renderer, int32 $blendmode)

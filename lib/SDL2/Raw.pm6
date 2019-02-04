@@ -301,6 +301,34 @@ sub SDL_GetTextureBlendMode(SDL_Texture $tex, Pointer[int32] $blendmode)
         is export
         {*}
 
+sub SDL_SetTextureAlphaMod(SDL_Texture $tex, uint8 $alpha)
+        returns int32
+        is native($lib)
+        is export
+        {*}
+sub SDL_GetTextureAlphaMod(SDL_Texture $tex, uint8 $alpha is rw)
+        returns int32
+        is native($lib)
+        is export
+        {*}
+
+sub SDL_SetTextureColorMod(SDL_Texture $tex,
+            uint8 $r,
+            uint8 $g,
+            uint8 $b)
+        returns int32
+        is native($lib)
+        is export
+        {*}
+sub SDL_GetTextureColorMod(SDL_Texture $tex,
+            uint8 $r is rw,
+            uint8 $g is rw,
+            uint8 $b is rw)
+        returns int32
+        is native($lib)
+        is export
+        {*}
+
 sub SDL_CreateTextureFromSurface(SDL_Renderer $renderer, SDL_Surface $surface )
         returns SDL_Texture
         is native($lib)

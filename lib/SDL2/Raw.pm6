@@ -265,7 +265,7 @@ sub SDL_GetRendererInfo(SDL_Renderer $renderer, SDL_RendererInfo $info)
         is export
         {*}
 
-sub SDL_CreateTexture(SDL_Renderer $renderer, int32 $format, int32 $access, int32 $w, int32 $h)
+sub SDL_CreateTexture(SDL_Renderer $renderer, uint32 $format, int32 $access, int32 $w, int32 $h)
         returns SDL_Texture
         is native($lib)
         is export

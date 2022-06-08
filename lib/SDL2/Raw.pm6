@@ -229,7 +229,22 @@ class SDL_Renderer is export is repr('CPointer') { }
 
 class SDL_Texture is export is repr('CPointer') { }
 
-class SDL_Surface is export is repr('CPointer') { }
+class SDL_PixelFormat is export is repr('CPointer') { }
+
+class SDL_Surface is export is repr('CStruct') {
+    has uint32 $!flags;
+    has SDL_PixelFormat $.format is rw;
+    has int32 $.w;
+    has int32 $.h;
+    has int32 $.pitch;
+    has Pointer $.pixels is rw;
+    has Pointer $.userdata is rw;
+    has int32 $!locked;
+    has Pointer $!lock_data;
+    has SDL_Rect $.clip_rect;
+    has Pointer $!map;
+    has int32 $.refcount is rw;
+ }
 
 class SDL_GLContext is export is repr('CPointer') { }
 
@@ -394,12 +409,31 @@ sub SDL_SetWindowTitle(SDL_Window $window, Str $title) is native($lib) is export
 sub SDL_GetWindowTitle(SDL_Window $window) returns Str is native($lib) is export {*}
 
 sub SDL_UpdateWindowSurface(SDL_Window $window) returns int32 is native($lib) is export {*}
+sub SDL_GetWindowSurface(SDL_Window $window) returns SDL_Surface is native($lib) is export {*}
 
 sub SDL_SetWindowGrab(SDL_Window $window, int32 $grabbed) is native($lib) is export {*}
 sub SDL_GetWindowGrab(SDL_Window $window) returns int32 is native($lib) is export {*}
 
 sub SDL_LoadBMP(Str $path) returns SDL_Surface is native($lib) is export {*}
 sub SDL_SaveBMP(SDL_Surface $surf, Str $file) returns int32 is native($lib) is export {*}
+
+sub SDL_CreateRGBSurface(uint32 $flags, int32 $width, int32 $height, int32 $depth,
+                         uint32 $Rmask, uint32 $Gmask, uint32 $Bmask, uint32 $Amask)
+        returns SDL_Surface
+        is native($lib)
+        is export
+        {*}
+sub SDL_FreeSurface(SDL_Surface $surface) is native($lib) is export {*}
+
+sub SDL_LockSurface(SDL_Surface $surface) returns int32 is native($lib) is export {*}
+sub SDL_UnlockSurface(SDL_Surface $surface) is native($lib) is export {*}
+
+sub SDL_MapRGBA(SDL_PixelFormat $format,
+                    uint8 $r, uint8 $g, uint8 $b, uint8 $a)
+        returns uint32
+        is native($lib)
+        is export
+        {*}
 
 enum SDL_EventType is export (
    FIRSTEVENT     => 0,

@@ -42,6 +42,7 @@ sub update (num \df) {
     my int $pointidx = 0;
     SDL_LockSurface($screen);
     memset($screen.pixels, 0x00000000, $h * $w * 4);
+    my $color = SDL_MapRGBA($screen.format, 0xff, 0xff, 0xff, 0xff);
     loop (my int $idx = 0; $idx < $particlenum; $idx = $idx + 1) {
         my int $willdraw = 0;
         if (@lifetimes[$idx] <= 0e0) {
@@ -71,7 +72,7 @@ sub update (num \df) {
             #$points[$pointidx++] = (@positions[$yidx] * 10).floor;
             my $x = (@positions[$xidx] * 10).floor;
             my $y = (@positions[$yidx] * 10).floor;
-            $pixels[$x + $y * $w] = SDL_MapRGBA($screen.format, 0xff, 0xff, 0xff, 0xff) if $x < $w && $y < $h;
+            $pixels[$x + $y * $w] = $color if $x < $w && $y < $h;
         }
 
         $xidx = $xidx + 2;

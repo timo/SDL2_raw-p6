@@ -241,7 +241,7 @@ class SDL_Surface is export is repr('CStruct') {
     has Pointer $.userdata is rw;
     has int32 $!locked;
     has Pointer $!lock_data;
-    has SDL_Rect $.clip_rect;
+    HAS SDL_Rect $.clip_rect;
     has Pointer $!map;
     has int32 $.refcount is rw;
  }
